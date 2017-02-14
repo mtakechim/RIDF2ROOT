@@ -164,7 +164,7 @@ double tof(Plastics &start, Plastics &stop, Timing mode){
     }
     
     
-    
+    return tof + offset;
     
 }
     
