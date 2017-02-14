@@ -1,6 +1,10 @@
 #ifndef parameters_h
 #define parameters_h
 
+enum FP {F1=1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11};  
+enum Timing {LE, CFD, LE_SLEW, V1290};
+
+
 namespace parameters{
   
 double PLQch2mm0[12]={0.,0.,0.,0.,0.,-61.72,    0.,0.,0.,0.,0.,0.};
