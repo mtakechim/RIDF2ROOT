@@ -74,11 +74,19 @@ int main(int argc, char* argv[]){
   music1.threshold(50);
   music2.threshold(50);
   
-  Plastics pl3(3,raw.PL3_QRaw);
-  Plastics pl5(5,raw.PL5_QRaw);
-  Plastics pl7(7,raw.PL7_QRaw);
-  Plastics pl11(11,raw.PL11_QRaw);
+  //Plastics pl3(3,raw.PL3_QRaw);
+  //Plastics pl5(5,raw.PL5_QRaw);
+  //Plastics pl7(7,raw.PL7_QRaw);
+  //Plastics pl11(11,raw.PL11_QRaw);
   Plastics pl11long(0,raw.PL11long_QRaw);
+  pl11long.set_mtdc_data(raw.PL11long_MTRaw[0],raw.PL11long_MTRaw[1],raw.PL11_MHit[0],raw.PL11_MHit[0]);
+  
+  Plastics pl3(F3,raw);
+  Plastics pl5(F5,raw);
+  Plastics pl7(F7,raw);
+  Plastics pl11(F11,raw);
+  
+ 
   pl3.set_qdc_threshold(50);
   pl5.set_qdc_threshold(50);
   pl7.set_qdc_threshold(50);
@@ -132,7 +140,7 @@ int main(int argc, char* argv[]){
   Long64_t iEntry = 0;
   for(iEntry=0;iEntry<num;iEntry++){
     if(iEntry%1000==0)cout << 100*iEntry/num <<" % "<< flush << "\r";
-    
+    cal.clear_variables();
     rawtree->GetEntry(iEntry);
 
     f3ic.calculate();    
@@ -183,6 +191,13 @@ int main(int argc, char* argv[]){
     cal.F11Y = ppac11.y;
     cal.F11A = ppac11.a;
     cal.F11B = ppac11.b;
+    
+    cal.TOF35 = tof(pl3,pl5,LE);
+    cal.TOF57 = tof(pl5,pl7,LE);
+    cal.TOF711 = tof(pl7,pl11,LE);
+    
+    
+    
     
     
     /// old part
