@@ -206,6 +206,14 @@ int main(int argc, char* argv[]){
     cal.TOF711 = tof(pl7,pl11,LE);
     
     
+    id_35.calculate();
+    cal.Beta35 = id_35.beta;
+    cal.AoQ35 = id_35.aoq;
+    cal.Delta35 = id_35.delta;
+    cal.Brho35 = id_35.delta;
+    
+    
+    
     
     
     

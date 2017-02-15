@@ -35,7 +35,7 @@ class PID{
     PID_t idt;
     double *tmatrix=nullptr;
     
-    PID(FP fp1, FP fp2):initial_fp(fp1),final_fp(fp2){};
+    PID(FP fp1, FP fp2);
     void set_plastics(Plastics *p1, Plastics *p2){pl_i = p1; pl_f = p2;};
     void set_ppacs(PPAC *p1, PPAC *p2){ppac_i = p1; ppac_f = p2;};
     void set_tof(double *t){tof = t;};
@@ -49,6 +49,21 @@ class PID{
     void calculate();
     double dipole_brho();
 };
+
+PID::PID(FP fp1, FP fp2):initial_fp(fp1),final_fp(fp2){
+    if(fp1==F3 && fp2==F5){
+        idt = F35;
+    }
+    else if(fp1==F5 && fp2==F7){
+        idt = F57;
+    }
+    else if(fp1==F7 && fp2==F11){
+        idt = F711;
+    }
+    else{
+    }
+};
+
 
 void PID::clear(){
     aoq=-1;
@@ -72,13 +87,18 @@ void PID::calculate(){
         return;
         }
         
-    double dispersion = matrix(0,6);
-    double distance = TOFDistance[final_fp] - TOFDistance[initial_fp];
+    double dispersion = matrix(0,5); // take dispersion from the matrix
+    double distance = TOFDistance[final_fp] - TOFDistance[initial_fp];  // calculate distance between plastics
     delta = ( (*xf)- (*xi)*matrix(0,0) - (*ai)*matrix(0,1))/dispersion;
     brho = (1+(delta/100.))*dipole_brho();
     beta = ((matrix(4,0)*(*xi) + matrix(4,1)*(*ai) + matrix(4,5)*delta)+1000.*distance)/c/(*tof);
     gamma = 1/TMath::Sqrt(1 - (beta*beta));
-    aoq = brho/beta/gamma/c/mass_unit;
+    aoq = c*brho/beta/gamma/mass_unit;
+    /*
+    std::cout<<"-----------"<<"\n";
+    std::cout<<*xi<<" "<<*xf<<" "<<*ai<<" "<<*af<<std::endl;
+    std::cout<<dipole_brho()<<" "<<brho<<" "<<delta<<" "<<beta<<" "<<aoq<<std::endl;
+    */
 }
 
 
