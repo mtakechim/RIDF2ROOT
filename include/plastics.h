@@ -123,7 +123,7 @@ void Plastics::calculate(){
     }
 }
 
-double tof(Plastics &start, Plastics &stop, Timing mode){
+double tof(Plastics &start, Plastics &stop, Timing_t mode){
     double offset = 0;
     int imode = 0;
     double tof = 0;
@@ -162,10 +162,8 @@ double tof(Plastics &start, Plastics &stop, Timing mode){
     else{
 	offset = 0;
     }
-    
-    
     return tof + offset;
-    
 }
-    
+
+
 #endif

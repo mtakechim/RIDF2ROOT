@@ -11,6 +11,7 @@
 #include "ic.h"
 #include "plastics.h"
 #include "ppac.h"
+#include "pid.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -102,6 +103,14 @@ int main(int argc, char* argv[]){
   ppac5.overflow = 570;
   ppac7.overflow = 570;
   ppac11.overflow = 570;
+  
+  PID id_35(F3,F5);
+  id_35.set_matrix(parameters::Mat35);
+  id_35.set_tof(&cal.TOF35);
+  id_35.set_positions(&cal.F3X,&cal.F3Y,&cal.F5X,&cal.F5Y);
+  id_35.set_angles(&cal.F3A,&cal.F3B,&cal.F5A,&cal.F5B);
+  id_35.set_dipoles(raw.Dipole);
+  
   
   
   // here copy some variables from raw to cal 
@@ -195,6 +204,14 @@ int main(int argc, char* argv[]){
     cal.TOF35 = tof(pl3,pl5,LE);
     cal.TOF57 = tof(pl5,pl7,LE);
     cal.TOF711 = tof(pl7,pl11,LE);
+    
+    
+    id_35.calculate();
+    cal.Beta35 = id_35.beta;
+    cal.AoQ35 = id_35.aoq;
+    cal.Delta35 = id_35.delta;
+    cal.Brho35 = id_35.delta;
+    
     
     
     
