@@ -58,11 +58,13 @@ struct caldata{
     Double_t AoQ57;
     Double_t Delta57;
     Double_t Beta57;
+    Double_t Brho57;
     
     //F7-F11
     Double_t AoQ711;
     Double_t Delta711;
     Double_t Beta711;
+    Double_t Brho711;
     
     //Charges
     Double_t Z3;
@@ -135,10 +137,12 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("AoQ57",&AoQ57,"AoQ57/D");
     tree->Branch("Delta57",&Delta57,"Delta57/D");
     tree->Branch("Beta57",&Beta57,"Beta57/D");
+    tree->Branch("Brho57",&Brho57,"Brho57/D");
     
     tree->Branch("AoQ711",&AoQ711,"AoQ711/D");
     tree->Branch("Delta711",&Delta711,"Delta711/D");
     tree->Branch("Beta711",&Beta711,"Beta711/D");
+    tree->Branch("Brho711",&Brho711,"Brho711/D");
 
     tree->Branch("Z3",&Z3,"Z3/D");
     tree->Branch("Z5",&Z5,"Z5/D");

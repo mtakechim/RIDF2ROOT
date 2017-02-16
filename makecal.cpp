@@ -111,6 +111,13 @@ int main(int argc, char* argv[]){
   id_35.set_angles(&cal.F3A,&cal.F3B,&cal.F5A,&cal.F5B);
   id_35.set_dipoles(raw.Dipole);
   
+  PID id_57(F5,F7);
+  id_57.set_matrix(parameters::Mat57);
+  id_57.set_tof(&cal.TOF57);
+  id_57.set_positions(&cal.F5X,&cal.F5Y,&cal.F7X,&cal.F7Y);
+  id_57.set_angles(&cal.F5A,&cal.F5B,&cal.F7A,&cal.F7B);
+  id_57.set_dipoles(raw.Dipole);
+  
   
   
   // here copy some variables from raw to cal 
@@ -215,7 +222,30 @@ int main(int argc, char* argv[]){
     cal.Delta35 = id_35.delta;
     cal.Brho35 = id_35.brho;
     
+    id_57.calculate();
+    cal.Beta57 = id_57.beta;
+    cal.AoQ57 = id_57.aoq;
+    cal.Delta57 = id_57.delta;
+    cal.Brho57 = id_57.delta;
     
+    
+    cal.F3ICGas = raw.IC_GasRaw[3];
+    cal.F3ICSum = f3ic.sum;
+    cal.F5ICSum = f5ic.sum;
+    cal.F7ICSum = f7ic.sum;
+    cal.MUSIC1Sum = music1.sum;
+    cal.MUSIC2Sum = music2.sum;
+    
+    cal.F3ICMean = f3ic.mean;
+    cal.F5ICMean = f5ic.mean;
+    cal.F7ICMean = f7ic.mean;
+    cal.MUSIC1Mean = music1.mean;
+    cal.MUSIC2Mean = music2.mean;
+    
+    cal.Z3 = cal.F3ICMean*cal.Beta35*cal.Beta35;
+    cal.Z5 = cal.F5ICMean*cal.Beta57*cal.Beta57;
+    cal.Z7 = cal.F7ICMean*cal.Beta57*cal.Beta57;
+    cal.Z11 = cal.MUSIC1Mean*cal.Beta711*cal.Beta711;
     
     
     
@@ -243,6 +273,9 @@ int main(int argc, char* argv[]){
     F3Y=rawdataold.GetFocusPointY_mm(3);
     F3A=rawdataold.GetFocusPointA_mrad(3);
     F3B=rawdataold.GetFocusPointB_mrad(3);
+    for(int i=0; i<4; i++){
+      posx[i]=rawdataold.posx[i];
+    }
     F7TSumX=rawdataold.GetTSumX(3);
 
     /*	  F3TSumY=rawdataold.GetTSumY(3);*/

@@ -4,14 +4,14 @@
 class IC{
     public:
     double sum=-1;
-    double av=-1;
+    double mean=-1;
     int fired = 0;
     void calculate();
     void clear();
     
     IC(int num, int* _data, int* _time_data=nullptr):nanodes(num),data(_data),time(_time_data){};
-    double total(){return sum;};
-    double average(){return av;};
+    double get_total(){return sum;};
+    double get_mean(){return mean;};
     int fired_anodes(){return fired;};
     void threshold(int t){th=t;};
     
@@ -24,7 +24,7 @@ class IC{
 
 void IC::clear(){
     sum = -1;
-    av = -1;
+    mean = -1;
     fired = 0;
 };
 
@@ -36,7 +36,7 @@ void IC::calculate(){
 	sum+=data[i];
     }
     if(fired>0){
-	av = sum/fired;
+	mean = sum/fired;
 	}
 }
 
