@@ -11,7 +11,7 @@ GXX = g++ -m64 -pthread
 .cpp.o:
 	$(GXX) $(CFLAGS) $(ROOTCFLAGS) -c $<
 
-makecal: makecal.cpp ./include/ic.h ./include/ppac.h ./include/plastics.h ./src/RIBF123ReadAndCalcRAW.cpp ./src/RIBF123PID.cpp
+makecal: makecal.cpp ./include/pid.h ./include/ic.h ./include/ppac.h ./include/plastics.h ./src/RIBF123ReadAndCalcRAW.cpp ./src/RIBF123PID.cpp
 	$(GXX) $(CFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -o $@ makecal.cpp ./src/RIBF123ReadAndCalcRAW.cpp ./src/RIBF123PID.cpp
 
 clean:
