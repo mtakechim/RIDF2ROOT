@@ -40,7 +40,7 @@ Int_t MUSIC2[8];
 
 Double_t F7TSumX;
 Double_t F7TSumY;
-Double_t posx[4];
+Double_t Posx[4];
 Double_t F3X;
 Double_t F5X;
 Double_t F7X;
@@ -89,8 +89,7 @@ void DefineNewBranches(TTree *tree){
   tree->Branch("Entry",&Entry,"Entry/I");
 
   tree->Branch("F7TSumX",&F7TSumX,"F7TSumX/D");
-  tree->Branch("posx[4]",posx,"posx[4]/D");
-
+  tree->Branch("Posx[4]",Posx,"Posx[4]/D");
   tree->Branch("F3X",&F3X,"F3X/D");
   tree->Branch("F5X",&F5X,"F5X/D");
   tree->Branch("F7X",&F7X,"F7X/D");

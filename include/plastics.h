@@ -112,8 +112,9 @@ void Plastics::calculate(){
     
     // mean time left + right / 2
     if(tcfddata!= nullptr && tcfddata[0]>time_th && tcfddata[1]>time_th){
-	t = ch2ns_PL_CFD[index][0]*tcfddata[0]+ch2ns_PL_CFD[index][1]*tcfddata[1];
-	t = t/2.0;
+	t_cfd = ch2ns_PL_CFD[index][0]*tcfddata[0]+ch2ns_PL_CFD[index][1]*tcfddata[1];
+	t_cfd = t_cfd/2.0;
+
     }
     
     // mean time from V1290
@@ -130,7 +131,7 @@ double tof(Plastics &start, Plastics &stop, Timing_t mode){
     switch(mode){
 	case LE:{ 
 		imode = 0;
-		tof = stop.t - start.t;
+		tof = stop.t- start.t;
 		break;
 		}
 	case CFD:{ 
@@ -162,7 +163,7 @@ double tof(Plastics &start, Plastics &stop, Timing_t mode){
     else{
 	offset = 0;
     }
-    return tof + offset;
+    return tof+ offset;
 }
 
 

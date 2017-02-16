@@ -7,7 +7,7 @@
 
 #include "makecal.h"
 #include "ribf123_rawvar.h"
-#include "ribf123_calvar.h"
+#include "caldata.h"
 #include "ic.h"
 #include "plastics.h"
 #include "ppac.h"
@@ -164,6 +164,9 @@ int main(int argc, char* argv[]){
     pl11long.calculate();
     ppac3.calculate();
     ppac5.calculate();
+    for(int i=0; i<4; i++){
+      cal.Posx[i]=ppac5.posy[i];
+    }
     ppac7.calculate();
     ppac11.calculate();
     
@@ -208,9 +211,9 @@ int main(int argc, char* argv[]){
     
     id_35.calculate();
     cal.Beta35 = id_35.beta;
-    cal.AoQ35 = id_35.aoq;
+    cal.AoQ35 = id_35.aoq+0.03;
     cal.Delta35 = id_35.delta;
-    cal.Brho35 = id_35.delta;
+    cal.Brho35 = id_35.brho;
     
     
     
@@ -240,9 +243,6 @@ int main(int argc, char* argv[]){
     F3Y=rawdataold.GetFocusPointY_mm(3);
     F3A=rawdataold.GetFocusPointA_mrad(3);
     F3B=rawdataold.GetFocusPointB_mrad(3);
-    for(int i=0; i<4; i++){
-      posx[i]=rawdataold.posx[i];
-    }
     F7TSumX=rawdataold.GetTSumX(3);
 
     /*	  F3TSumY=rawdataold.GetTSumY(3);*/
@@ -365,6 +365,7 @@ int main(int argc, char* argv[]){
     }
     */
     
+    //    std::cout<<Posx[0]<<std::endl;
     tree->Fill();
      
   }

@@ -308,7 +308,9 @@ Double_t RIBF123ReadAndCalcRAW::GetLeadingEdgeTOF(int FPstart, int FPend){
   tofoffset[5][7]=TOFoffset[1][0];
   tofoffset[7][11]=TOFoffset[2][0];
   
-  tof = tdc[FPend]-tdc[FPstart]+tofoffset[FPstart][FPend];
+  tof = tdc[FPend];
+    //-tdc[FPstart];
+    //+tofoffset[FPstart][FPend];
 
   return tof;
   

@@ -89,9 +89,9 @@ void PID::calculate(){
         
     double dispersion = matrix(0,5); // take dispersion from the matrix
     double distance = TOFDistance[final_fp] - TOFDistance[initial_fp];  // calculate distance between plastics
-    delta = ( (*xf)- (*xi)*matrix(0,0) - (*ai)*matrix(0,1))/dispersion;
+    delta = ( (*xf)- (*xi)*matrix(0,0) - (*ai*1000.)*matrix(0,1))/dispersion;
     brho = (1+(delta/100.))*dipole_brho();
-    beta = ((matrix(4,0)*(*xi) + matrix(4,1)*(*ai) + matrix(4,5)*delta)+1000.*distance)/c/(*tof);
+    beta = ((matrix(4,0)*(*xi) + matrix(4,1)*(*ai*1000.) + matrix(4,5)*delta)+1000.*distance)/c/(*tof);
     gamma = 1/TMath::Sqrt(1 - (beta*beta));
     aoq = c*brho/beta/gamma/mass_unit;
     /*
