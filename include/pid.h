@@ -109,6 +109,7 @@ void PID::calculate(){
         if(*xi>-200){                   // if we have position from initial focal plane
             dx += - (*xi)*matrix(0,0);  // subtract init position*magnification
         }
+        delta = ( dx - angle*matrix(0,1))/dispersion;
     }
     else{ // no position at the final focal plane, so lets assign default value
         delta = 0;
