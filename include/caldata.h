@@ -6,12 +6,17 @@
 struct caldata{
     int Nevent;
     // ICs
-    Double_t F3ICSum;
     Double_t F3ICGas;
+    Double_t F3ICSum;
     Double_t F5ICSum;
     Double_t F7ICSum;
     Double_t MUSIC1Sum;
     Double_t MUSIC2Sum;
+    Double_t F3ICMean;
+    Double_t F5ICMean;
+    Double_t F7ICMean;
+    Double_t MUSIC1Mean;
+    Double_t MUSIC2Mean;
     
     //PPACs
     Double_t Posx[4];
@@ -112,12 +117,19 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("F9B",&F9B,"F9B/D");
     tree->Branch("F11B",&F11B,"F11B/D");
   
-    tree->Branch("F3ICSum",&F3ICSum,"F3ICSum/D");
     tree->Branch("F3ICGas",&F3ICGas,"F3ICGas/D");
+    tree->Branch("F3ICSum",&F3ICSum,"F3ICSum/D");
     tree->Branch("F5ICSum",&F5ICSum,"F5ICSum/D");    
     tree->Branch("F7ICSum",&F7ICSum,"F7ICSum/D");
     tree->Branch("MUSIC1Sum",&MUSIC1Sum,"MUSIC1Sum/D");
     tree->Branch("MUSIC2Sum",&MUSIC2Sum,"MUSIC2Sum/D");
+    
+    tree->Branch("F3ICMean",&F3ICMean,"F3ICMean/D");
+    tree->Branch("F5ICMean",&F5ICMean,"F5ICMean/D");    
+    tree->Branch("F7ICMean",&F7ICMean,"F7ICMean/D");
+    tree->Branch("MUSIC1Mean",&MUSIC1Mean,"MUSIC1Mean/D");
+    tree->Branch("MUSIC2Mean",&MUSIC2Mean,"MUSIC2Mean/D");
+
 
     tree->Branch("TOF35",&TOF35,"TOF35/D");
     tree->Branch("TOF57",&TOF57,"TOF57/D");

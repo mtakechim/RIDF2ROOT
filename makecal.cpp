@@ -273,9 +273,6 @@ int main(int argc, char* argv[]){
     F3Y=rawdataold.GetFocusPointY_mm(3);
     F3A=rawdataold.GetFocusPointA_mrad(3);
     F3B=rawdataold.GetFocusPointB_mrad(3);
-    for(int i=0; i<4; i++){
-      posx[i]=rawdataold.posx[i];
-    }
     F7TSumX=rawdataold.GetTSumX(3);
 
     /*	  F3TSumY=rawdataold.GetTSumY(3);*/
