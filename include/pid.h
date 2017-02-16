@@ -70,7 +70,7 @@ void PID::clear(){
     brho=-1;
     beta = -1;
     delta = -999;
-    gamma = 0;
+    gamma = -1;
 }
 
 
