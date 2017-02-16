@@ -5,7 +5,7 @@
 */
 
 // config
-//#define PPAC_DETAILS 1  // output ppac sums and partial positions
+#define PPAC_DETAILS 1  // output ppac sums and partial positions
 //#define IC_RAW 1  // output IC Raw data
 
 #include "makecal.h"
@@ -83,7 +83,7 @@ int main(int argc, char* argv[]){
   //Plastics pl7(7,raw.PL7_QRaw);
   //Plastics pl11(11,raw.PL11_QRaw);
   Plastics pl11long(0,raw.PL11long_QRaw);
-  pl11long.set_mtdc_data(raw.PL11long_MTRaw[0],raw.PL11long_MTRaw[1],raw.PL11_MHit[0],raw.PL11_MHit[0]);
+  pl11long.set_mtdc_data(raw.PL11long_MTRaw[0],raw.PL11long_MTRaw[1],&raw.PL11_MHit[0],&raw.PL11_MHit[1],&raw.tV1290);
   
   Plastics pl3(F3,raw);
   Plastics pl5(F5,raw);
