@@ -14,7 +14,7 @@ struct caldata{
     Double_t MUSIC2Sum;
     
     //PPACs
-    Double_t posx[4];
+    Double_t Posx[4];
     Double_t F7TSumX;
     Double_t F7TSumY;
     Double_t F3X;
@@ -52,6 +52,7 @@ struct caldata{
     Double_t AoQ35;
     Double_t Delta35;
     Double_t Beta35;
+    Double_t Brho35;
     
     //F5-F7
     Double_t AoQ57;
@@ -83,7 +84,7 @@ void caldata::clear_variables(){
 void caldata::set_branches(TTree *tree){
     tree->Branch("Nevent",&Nevent,"Nevent/I");
     tree->Branch("F7TSumX",&F7TSumX,"F7TSumX/D");
-    tree->Branch("posx[4]",posx,"posx[4]/D");
+    tree->Branch("Posx[4]",Posx,"Posx[4]/D");
 
     tree->Branch("F3X",&F3X,"F3X/D");
     tree->Branch("F5X",&F5X,"F5X/D");
@@ -129,6 +130,7 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("AoQ35",&AoQ35,"AoQ35/D");
     tree->Branch("Delta35",&Delta35,"Delta35/D");
     tree->Branch("Beta35",&Beta35,"Beta35/D");
+    tree->Branch("Brho35",&Brho35,"Brho35/D");
     
     tree->Branch("AoQ57",&AoQ57,"AoQ57/D");
     tree->Branch("Delta57",&Delta57,"Delta57/D");
