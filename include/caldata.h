@@ -90,8 +90,6 @@ void caldata::clear_variables(){
 
 void caldata::set_branches(TTree *tree){
     tree->Branch("Nevent",&Nevent,"Nevent/I");
-    tree->Branch("F7TSumX",&F7TSumX,"F7TSumX/D");
-    tree->Branch("Posx[4]",Posx,"Posx[4]/D");
 
     tree->Branch("F3X",&F3X,"F3X/D");
     tree->Branch("F5X",&F5X,"F5X/D");

@@ -3,7 +3,10 @@
  * 
  * last modification 13.2.2017
 */
-#define DEFNUM 100000
+
+// config
+//#define PPAC_DETAILS 1  // output ppac sums and partial positions
+//#define IC_RAW 1  // output IC Raw data
 
 #include "makecal.h"
 #include "ribf123_rawvar.h"
@@ -124,25 +127,28 @@ int main(int argc, char* argv[]){
   // this will points to raw variables data so the data does not neet to be copied
   tree->Branch("Nevent",&raw.Nevent,"Nevent/I");
   tree->Branch("Dipole",raw.Dipole,"Dipole[9]/D");
+  
+  #ifdef IC_RAW
   tree->Branch("GSIICERaw",raw.GSIICERaw,"GSIICERaw[2][8]/I");
   tree->Branch("IC3Raw",raw.IC3Raw,"IC3Raw[6]/I");
   tree->Branch("IC5Raw",raw.IC5Raw,"IC5Raw[5]/I");
   tree->Branch("IC7Raw",raw.IC7Raw,"IC7Raw[6]/I");
-  tree->Branch("PL3_QRaw",raw.PL3_QRaw,"PL3_QRaw[2]/I");
-  tree->Branch("PL3_MHit",raw.PL3_MHit,"PL3_MHit[2]/I");
+  #endif
   
+  #ifdef PPAC_DETAILS
+  tree->Branch("PPAC3_posx",ppac3.posx,"PPAC3_posx[4]/D");
+  tree->Branch("PPAC5_posx",ppac5.posx,"PPAC5_posx[4]/D");
+  tree->Branch("PPAC7_posx",ppac7.posx,"PPAC7_posx[4]/D");
+  tree->Branch("PPAC11_posx",ppac11.posx,"PPAC11_posx[4]/D");
   tree->Branch("PPAC3_tsumx",ppac3.tsumx,"PPAC3_tsumx[4]/D");
-  tree->Branch("PPAC3_tsumy",ppac3.tsumy,"PPAC3_tsumy[4]/D");
-  
+  tree->Branch("PPAC3_tsumy",ppac3.tsumy,"PPAC3_tsumy[4]/D");  
   tree->Branch("PPAC5_tsumx",ppac5.tsumx,"PPAC5_tsumx[4]/D");
   tree->Branch("PPAC5_tsumy",ppac5.tsumy,"PPAC5_tsumy[4]/D");
-  
   tree->Branch("PPAC7_tsumx",ppac7.tsumx,"PPAC7_tsumx[4]/D");
-  tree->Branch("PPAC7_tsumy",ppac7.tsumy,"PPAC7_tsumy[4]/D");
-  
+  tree->Branch("PPAC7_tsumy",ppac7.tsumy,"PPAC7_tsumy[4]/D");  
   tree->Branch("PPAC11_tsumx",ppac11.tsumx,"PPAC11_tsumx[4]/D");
   tree->Branch("PPAC11_tsumy",ppac11.tsumy,"PPAC11_tsumy[4]/D");
-  
+  #endif
   
   RIBF123ReadAndCalcRAW rawdataold;
   //Define New Branches
@@ -171,9 +177,6 @@ int main(int argc, char* argv[]){
     pl11long.calculate();
     ppac3.calculate();
     ppac5.calculate();
-    for(int i=0; i<4; i++){
-      cal.Posx[i]=ppac5.posy[i];
-    }
     ppac7.calculate();
     ppac11.calculate();
     
