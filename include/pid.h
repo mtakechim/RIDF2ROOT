@@ -89,9 +89,38 @@ void PID::calculate(){
         
     double dispersion = matrix(0,5); // take dispersion from the matrix
     double distance = TOFDistance[final_fp] - TOFDistance[initial_fp];  // calculate distance between plastics
-    delta = ( (*xf)- (*xi)*matrix(0,0) - (*ai*1000.)*matrix(0,1))/dispersion;
+    double dx = 0.0;  // position difference for delta calculation
+    double tof_dl = 0.0;  // tof length correction
+    double angle = 0.0; //angle used for correction
+    
+    // check if correct angle is provided
+    if(*ai>-200){
+        angle = *ai;
+    }
+    else if(*af>-200){ // init angle not correct, so calculate from final/magnification
+        angle = *af/matrix(1,1); 
+    }
+    else{ // no angle information
+        angle = 0.0; 
+    }
+    
+    if(*xf>-200){ // check if we have position at pressumably disp. focal plane
+        dx = *xf;
+        if(*xi>-200){                   // if we have position from initial focal plane
+            dx += - (*xi)*matrix(0,0);  // subtract init position*magnification
+        }
+    }
+    else{ // no position at the final focal plane, so lets assign default value
+        delta = 0;
+    }
+    
+    tof_dl = (matrix(4,0)*(*xi) + matrix(4,1)*angle + matrix(4,5)*delta);  
+    if(*xf>-200)
+        delta = ( dx - angle*matrix(0,1))/dispersion;
+    else delta = -999; // make delta wrong for brho calculation
+    
     brho = (1+(delta/100.))*dipole_brho();
-    beta = ((matrix(4,0)*(*xi) + matrix(4,1)*(*ai*1000.) + matrix(4,5)*delta)+1000.*distance)/c/(*tof);
+    beta = ( tof_dl+1000.*distance)/c/(*tof);
     gamma = 1/TMath::Sqrt(1 - (beta*beta));
     aoq = c*brho/beta/gamma/mass_unit;
     /*

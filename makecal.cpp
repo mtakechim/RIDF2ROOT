@@ -127,6 +127,11 @@ int main(int argc, char* argv[]){
   // this will points to raw variables data so the data does not neet to be copied
   tree->Branch("Nevent",&raw.Nevent,"Nevent/I");
   tree->Branch("Dipole",raw.Dipole,"Dipole[9]/D");
+  tree->Branch("PL3_MHit",raw.PL3_MHit,"PL3_MHit[2]/I");
+  tree->Branch("PL5_MHit",raw.PL5_MHit,"PL5_MHit[2]/I");
+  tree->Branch("PL7_MHit",raw.PL7_MHit,"PL7_MHit[2]/I");
+  tree->Branch("PL11_MHit",raw.PL11_MHit,"PL11_MHit[2]/I");
+  tree->Branch("PL11long_MHit",raw.PL11long_MHit,"PL11long_MHit[2]/I");
   
   #ifdef IC_RAW
   tree->Branch("GSIICERaw",raw.GSIICERaw,"GSIICERaw[2][8]/I");
