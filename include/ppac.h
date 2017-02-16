@@ -59,7 +59,7 @@ void PPAC::calculate(){
         tdiffy[i]=tcal[i][1]-tcal[i][3]-parameters::Outoffset[index][i][1];
 	
         tsumx[i]=tcal[i][2]+tcal[i][0];
-        tsumy[i]=tcal[i][2]+tcal[i][0];
+        tsumy[i]=tcal[i][1]+tcal[i][3];
 	
         posx[i]= 0.5*parameters::ns2mm[index][i][0]*tdiffx[i]-parameters::Inoffset[index][i][0]-parameters::Geomoffset[index][i][0];
         posy[i]= 0.5*parameters::ns2mm[index][i][1]*tdiffy[i]-parameters::Inoffset[index][i][0]-parameters::Geomoffset[index][i][1];
