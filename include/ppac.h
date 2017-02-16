@@ -86,6 +86,7 @@ void PPAC::calculate(){
     }
     x = (sum_z*sum_xz-(sum_x*sum_zz))/(sum_z*sum_z- (nx*sum_zz));
     a = (sum_z*sum_x-(nx*sum_xz))/(sum_z*sum_z-(nx*sum_zz));
+    a*= 1000.0; // to mrad
     
     double sum_y=0, sum_yz=0;
     int ny=0;
@@ -104,6 +105,7 @@ void PPAC::calculate(){
     }
     y = (sum_z*sum_yz-(sum_y*sum_zz))/(sum_z*sum_z- (ny*sum_zz));
     b = (sum_z*sum_y-(ny*sum_yz))/(sum_z*sum_z-(ny*sum_zz));
+    b*= 1000.0; // to mrad;
     
 }
 
