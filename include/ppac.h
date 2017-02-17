@@ -38,8 +38,10 @@ void PPAC::clear(){
     y=-200;
     a = -200;
     b = -200;
-    memset(posx,-200,sizeof(posx));
-    memset(posy,-200,sizeof(posy));
+    for(int i=0;i<4;i++){
+        posx[i]=-200.;
+        posy[i]=-200.;
+    }
 }
 
 void PPAC::calculate(){
@@ -82,11 +84,16 @@ void PPAC::calculate(){
                 sum_xz+= posx[j]*parameters::Zpos[0][index][j];
                 nx++;
             }
+            else{
+                posx[j]=-200.0;
+            }
         }
+        
+        x = (sum_z*sum_xz-(sum_x*sum_zz))/(sum_z*sum_z- (nx*sum_zz));
+        a = (sum_z*sum_x-(nx*sum_xz))/(sum_z*sum_z-(nx*sum_zz));
+        a*= 1000.0; // to mrad
     }
-    x = (sum_z*sum_xz-(sum_x*sum_zz))/(sum_z*sum_z- (nx*sum_zz));
-    a = (sum_z*sum_x-(nx*sum_xz))/(sum_z*sum_z-(nx*sum_zz));
-    a*= 1000.0; // to mrad
+    
     
     double sum_y=0, sum_yz=0;
     int ny=0;
@@ -101,11 +108,16 @@ void PPAC::calculate(){
                 sum_yz+= posy[j]*parameters::Zpos[0][index][j];
                 ny++;
             }
+            else{
+                posy[j]=-200.;
+            }
         }
+        
+        y = (sum_z*sum_yz-(sum_y*sum_zz))/(sum_z*sum_z- (ny*sum_zz));
+        b = (sum_z*sum_y-(ny*sum_yz))/(sum_z*sum_z-(ny*sum_zz));
+        b*= 1000.0; // to mrad;
     }
-    y = (sum_z*sum_yz-(sum_y*sum_zz))/(sum_z*sum_z- (ny*sum_zz));
-    b = (sum_z*sum_y-(ny*sum_yz))/(sum_z*sum_z-(ny*sum_zz));
-    b*= 1000.0; // to mrad;
+    
     
 }
 
