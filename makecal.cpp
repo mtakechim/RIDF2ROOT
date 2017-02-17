@@ -1,7 +1,6 @@
 /* M. Takechi Dec. 2016
  * A. Prochazka feb 2017
  * 
- * last modification 13.2.2017
 */
 
 // config
@@ -63,7 +62,9 @@ int main(int argc, char* argv[]){
   caldata cal;
   cal.set_branches(tree);
   
-  // detector setup
+  ///////////// detector setup
+  
+  // ICs
   IC f3ic(6,raw.IC3Raw); //6 anodes, pointer to the data array
   IC f5ic(5,raw.IC5Raw);
   IC f7ic(6,raw.IC7Raw);
@@ -77,19 +78,14 @@ int main(int argc, char* argv[]){
   music1.threshold(50);
   music2.threshold(50);
   
-  //Plastics pl3(3,raw.PL3_QRaw);
-  //Plastics pl5(5,raw.PL5_QRaw);
-  //Plastics pl7(7,raw.PL7_QRaw);
-  //Plastics pl11(11,raw.PL11_QRaw);
+  // Plastics
   Plastics pl11long(0,raw.PL11long_QRaw);
   pl11long.set_mtdc_data(raw.PL11long_MTRaw[0],raw.PL11long_MTRaw[1],&raw.PL11_MHit[0],&raw.PL11_MHit[1],&raw.tV1290);
-  
   Plastics pl3(F3,raw);
   Plastics pl5(F5,raw);
   Plastics pl7(F7,raw);
   Plastics pl11(F11,raw);
-  
- 
+   
   pl3.set_qdc_threshold(50);
   pl5.set_qdc_threshold(50);
   pl7.set_qdc_threshold(50);
@@ -102,6 +98,7 @@ int main(int argc, char* argv[]){
   pl11.set_tdc_threshold(1);
   pl11long.set_tdc_threshold(1);
   
+  // PPACs
   PPAC ppac3(3,raw.PPAC3_QRaw,raw.PPAC3_TRaw,raw.PPAC3_AQRaw,raw.PPAC3_ATRaw);
   PPAC ppac5(5,raw.PPAC5_QRaw,raw.PPAC5_TRaw,raw.PPAC5_AQRaw,raw.PPAC5_ATRaw);
   PPAC ppac7(7,raw.PPAC7_QRaw,raw.PPAC7_TRaw,raw.PPAC7_AQRaw,raw.PPAC7_ATRaw);
@@ -112,6 +109,8 @@ int main(int argc, char* argv[]){
   ppac7.overflow = 570;
   ppac11.overflow = 570;
   
+  
+  // IDs
   PID id_35(F3,F5);
   id_35.set_matrix(parameters::Mat35);
   id_35.set_tof(&cal.TOF35);
@@ -169,6 +168,7 @@ int main(int argc, char* argv[]){
   tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
   #endif
   
+  // Additional tracking
   #ifdef PPAC_TRACKS
   Track ppac_pl3x;
   tree->Branch("PPAC_PL3X",&ppac_pl3x.val,"PPAC_PL3X/D");
@@ -272,10 +272,17 @@ int main(int argc, char* argv[]){
     cal.MUSIC1GMean = music1.gmean;
     cal.MUSIC2GMean = music2.gmean;
     
-    cal.Z3 = TMath::Sqrt(cal.F3ICMean*cal.Beta35*cal.Beta35);
-    cal.Z5 = TMath::Sqrt(cal.F5ICMean*cal.Beta57*cal.Beta57);
-    cal.Z7 = TMath::Sqrt(cal.F7ICMean*cal.Beta57*cal.Beta57);
-    cal.Z11 = TMath::Sqrt(cal.MUSIC1Mean*cal.Beta711*cal.Beta711);
+    cal.F3ICde = f3ic.mean*cal.Beta35*cal.Beta35;
+    cal.F5ICde = f5ic.mean*cal.Beta57*cal.Beta57;
+    cal.F7ICde = f7ic.mean*cal.Beta57*cal.Beta57;
+    cal.MUSIC1de = music1.mean*cal.Beta711*cal.Beta711;
+    cal.MUSIC2de = music2.mean*cal.Beta711*cal.Beta711;
+    
+    
+    cal.Z3 = TMath::Sqrt(cal.F3ICde);
+    cal.Z5 = TMath::Sqrt(cal.F5ICde);
+    cal.Z7 = TMath::Sqrt(cal.F7ICde);
+    cal.Z11 = TMath::Sqrt(cal.MUSIC1de);
     
     tree->Fill();
      
