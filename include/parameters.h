@@ -11,6 +11,10 @@ double c = 299.792488; // mm/ns
 double mass_unit = 931.49432; // MeV/c^2
 
 double TOFDistance[12]={-31.633,-20.841,-8.8,0.,11.792,23.283,34.775,46.567,57.867,70.409,81.809,94.35};  
+double distance_PL3_focus = -205.0; // distance focus to plastic F3
+double distance_PL5_focus = 400.0; // distance focus to plastic F5
+double distance_PL7_focus = 300.0; // distance focus to plastic F7
+double distance_PL11_focus = -432.0; // distance focus to plastic F11
 
 double PLQch2mm0[12]={0.,0.,0.,0.,0.,-61.72,    0.,0.,0.,0.,0.,0.};
 double PLQch2mm1[12]={0.,0.,0.,0.,0.,0.1057,    0.,0.,0.,0.,0.,0.};

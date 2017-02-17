@@ -1,5 +1,6 @@
 #ifndef ic_h
 #define ic_h
+#include <string.h>
 
 class IC{
     public:
@@ -20,7 +21,7 @@ class IC{
     int th=0;
     int nanodes=0;
     int *data=nullptr;
-    int *time=nullptr;
+    int *time=nullptr;    
 };
 
 void IC::clear(){

@@ -5,13 +5,16 @@
 */
 
 // config
-#define PPAC_DETAILS 1  // output ppac sums and partial positions
+#define PLASTICS_DETAILS 1
+//#define PPAC_DETAILS 1  // output ppac sums and partial positions
 //#define IC_RAW 1  // output IC Raw data
+#define PPAC_TRACKS 1
 
 #include "makecal.h"
 #include "ribf123_rawvar.h"
 #include "caldata.h"
 #include "pid.h"
+#include "utils.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -93,6 +96,12 @@ int main(int argc, char* argv[]){
   pl11.set_qdc_threshold(50);
   pl11long.set_qdc_threshold(50);
   
+  pl3.set_tdc_threshold(1);
+  pl5.set_tdc_threshold(1);
+  pl7.set_tdc_threshold(1);
+  pl11.set_tdc_threshold(1);
+  pl11long.set_tdc_threshold(1);
+  
   PPAC ppac3(3,raw.PPAC3_QRaw,raw.PPAC3_TRaw,raw.PPAC3_AQRaw,raw.PPAC3_ATRaw);
   PPAC ppac5(5,raw.PPAC5_QRaw,raw.PPAC5_TRaw,raw.PPAC5_AQRaw,raw.PPAC5_ATRaw);
   PPAC ppac7(7,raw.PPAC7_QRaw,raw.PPAC7_TRaw,raw.PPAC7_AQRaw,raw.PPAC7_ATRaw);
@@ -151,6 +160,25 @@ int main(int argc, char* argv[]){
   tree->Branch("PPAC11_tsumy",ppac11.tsumy,"PPAC11_tsumy[4]/D");
   #endif
   
+  #ifdef PLASTICS_DETAILS
+  tree->Branch("PL3_tdif",&pl3.t_dif,"PL3_tdif/D");
+  tree->Branch("PL5_tdif",&pl5.t_dif,"PL5_tdif/D");
+  tree->Branch("PL7_tdif",&pl7.t_dif,"PL7_tdif/D");
+  tree->Branch("PL3_mtdif",&pl3.mt_dif,"PL3_mtdif/D");
+  tree->Branch("PL5_mtdif",&pl5.mt_dif,"PL5_mtdif/D");
+  tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
+  #endif
+  
+  #ifdef PPAC_TRACKS
+  Track ppac_pl3x;
+  tree->Branch("PPAC_PL3X",&ppac_pl3x.val,"PPAC_PL3X/D");
+  Track ppac_pl5x;
+  tree->Branch("PPAC_PL5X",&ppac_pl5x.val,"PPAC_PL5X/D");
+  Track ppac_pl7x;
+  tree->Branch("PPAC_PL7X",&ppac_pl7x.val,"PPAC_PL7X/D");
+  Track ppac_pl11x;
+  tree->Branch("PPAC_PL11X",&ppac_pl11x.val,"PPAC_PL11X/D");
+  #endif
 
   //Event Loop
   Long64_t iEntry = 0;
@@ -199,6 +227,13 @@ int main(int argc, char* argv[]){
     cal.F11Y = ppac11.y;
     cal.F11A = ppac11.a;
     cal.F11B = ppac11.b;
+    
+    #ifdef PPAC_TRACKS
+    ppac_pl3x(ppac3.x,ppac3.a,parameters::distance_PL3_focus);
+    ppac_pl5x(ppac5.x,ppac5.a,parameters::distance_PL5_focus);
+    ppac_pl7x(ppac7.x,ppac7.a,parameters::distance_PL7_focus);
+    ppac_pl11x(ppac11.x,ppac11.a,parameters::distance_PL11_focus);
+    #endif
     
     cal.TOF35 = tof(pl3,pl5,LE);
     cal.TOF57 = tof(pl5,pl7,LE);

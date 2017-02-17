@@ -116,21 +116,21 @@ void Plastics::calculate(){
     if(tdata!= nullptr && tdata[0]>time_th && tdata[1]>time_th){
 	t = ch2ns_PL[index][0]*tdata[0]+ch2ns_PL[index][1]*tdata[1];
 	t = t/2.0;
-    t_dif = (ch2ns_PL[index][0]*tdata[0]) - (ch2ns_PL[index][1]*tdata[1]);
+	t_dif = (ch2ns_PL[index][0]*tdata[0]) - (ch2ns_PL[index][1]*tdata[1]);
     }
     
     // mean time left + right / 2
     if(tcfddata!= nullptr && tcfddata[0]>time_th && tcfddata[1]>time_th){
 	t_cfd = ch2ns_PL_CFD[index][0]*tcfddata[0]+ch2ns_PL_CFD[index][1]*tcfddata[1];
 	t_cfd = t_cfd/2.0;
-    t_cfd_dif = (ch2ns_PL_CFD[index][0]*tcfddata[0]) - (ch2ns_PL_CFD[index][1]*tcfddata[1]);
+	t_cfd_dif = (ch2ns_PL_CFD[index][0]*tcfddata[0]) - (ch2ns_PL_CFD[index][1]*tcfddata[1]);
     }
     
     // mean time from V1290
     if(mt_left != nullptr && mt_right != nullptr && *mt_left_nhit>0 && *mt_left_nhit>0){
 	mt = mt_left[0]+mt_right[0]- *mt_time_ref - *mt_time_ref;
 	mt = 0.025*mt/2.;
-    mt_dif = 0.025*(mt_left[0]- mt_right[0]);
+	mt_dif = 0.025*(mt_left[0]- mt_right[0]);
     }
 }
 
