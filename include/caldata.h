@@ -22,6 +22,11 @@ struct caldata{
     Double_t F7ICGMean;
     Double_t MUSIC1GMean;
     Double_t MUSIC2GMean;
+    Double_t F3ICde;
+    Double_t F5ICde;
+    Double_t F7ICde;
+    Double_t MUSIC1de;
+    Double_t MUSIC2de;
     
     //PPACs
     Double_t F3X;
@@ -135,6 +140,12 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("F7ICGMean",&F7ICGMean,"F7ICGMean/D");
     tree->Branch("MUSIC1GMean",&MUSIC1GMean,"MUSIC1GMean/D");
     tree->Branch("MUSIC2GMean",&MUSIC2GMean,"MUSIC2GMean/D");
+    
+    tree->Branch("F3ICde",&F3ICde,"F3ICde/D");
+    tree->Branch("F5ICde",&F5ICde,"F5ICde/D");    
+    tree->Branch("F7ICde",&F7ICde,"F7ICde/D");
+    tree->Branch("MUSIC1de",&MUSIC1de,"MUSIC1de/D");
+    tree->Branch("MUSIC2de",&MUSIC2de,"MUSIC2de/D");
 
 
     tree->Branch("TOF35",&TOF35,"TOF35/D");
