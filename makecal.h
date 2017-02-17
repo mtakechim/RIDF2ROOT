@@ -4,5 +4,12 @@
 #include "TFile.h"
 #include "TMath.h"
 #include <iostream>
+#include "ribf123_rawvar.h"
+#include "ic.h"
+#include "plastics.h"
+#include "ppac.h"
 using namespace std;
+
+void setup(rawdata &raw){
+}
 #endif

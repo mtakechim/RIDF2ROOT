@@ -11,9 +11,6 @@
 #include "makecal.h"
 #include "ribf123_rawvar.h"
 #include "caldata.h"
-#include "ic.h"
-#include "plastics.h"
-#include "ppac.h"
 #include "pid.h"
 using namespace std;
 
@@ -22,7 +19,6 @@ int main(int argc, char* argv[]){
   const char* rawfileprefix = "raw_";
   const char* calfileprefix = "cal_";
   
-  int run;
   TString ifname, ofname, ofprefix;
   
   // Check Arguments
@@ -178,14 +174,6 @@ int main(int argc, char* argv[]){
     ppac7.calculate();
     ppac11.calculate();
     
-    
-    cal.F3ICSum = f3ic.sum;
-    cal.F3ICGas = raw.IC_GasRaw[3];
-    cal.F5ICSum = f5ic.sum;
-    cal.F7ICSum = f7ic.sum;
-    cal.MUSIC1Sum = music1.sum;
-    cal.MUSIC2Sum = music2.sum;
-    
     cal.F3PLQ_X = pl3.xq;
     cal.F5PLQ_X = pl5.xq;
     cal.F7PLQ_X = pl7.xq;
@@ -242,6 +230,12 @@ int main(int argc, char* argv[]){
     cal.F7ICMean = f7ic.mean;
     cal.MUSIC1Mean = music1.mean;
     cal.MUSIC2Mean = music2.mean;
+    
+    cal.F3ICGMean = f3ic.gmean;
+    cal.F5ICGMean = f5ic.gmean;
+    cal.F7ICGMean = f7ic.gmean;
+    cal.MUSIC1GMean = music1.gmean;
+    cal.MUSIC2GMean = music2.gmean;
     
     cal.Z3 = TMath::Sqrt(cal.F3ICMean*cal.Beta35*cal.Beta35);
     cal.Z5 = TMath::Sqrt(cal.F5ICMean*cal.Beta57*cal.Beta57);
