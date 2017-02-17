@@ -155,13 +155,6 @@ int main(int argc, char* argv[]){
   tree->Branch("PPAC11_tsumy",ppac11.tsumy,"PPAC11_tsumy[4]/D");
   #endif
   
-  RIBF123ReadAndCalcRAW rawdataold;
-  //Define New Branches
-  //DefineNewBranches(tree);
-  //To Read Raw ROOT File
-  rawdataold.SetTree(rawtree);
-  
-   
 
   //Event Loop
   Long64_t iEntry = 0;
@@ -250,160 +243,11 @@ int main(int argc, char* argv[]){
     cal.MUSIC1Mean = music1.mean;
     cal.MUSIC2Mean = music2.mean;
     
-    cal.Z3 = cal.F3ICMean*cal.Beta35*cal.Beta35;
-    cal.Z5 = cal.F5ICMean*cal.Beta57*cal.Beta57;
-    cal.Z7 = cal.F7ICMean*cal.Beta57*cal.Beta57;
-    cal.Z11 = cal.MUSIC1Mean*cal.Beta711*cal.Beta711;
+    cal.Z3 = TMath::Sqrt(cal.F3ICMean*cal.Beta35*cal.Beta35);
+    cal.Z5 = TMath::Sqrt(cal.F5ICMean*cal.Beta57*cal.Beta57);
+    cal.Z7 = TMath::Sqrt(cal.F7ICMean*cal.Beta57*cal.Beta57);
+    cal.Z11 = TMath::Sqrt(cal.MUSIC1Mean*cal.Beta711*cal.Beta711);
     
-    
-    
-    
-    /// old part
-    Entry = iEntry;
-    rawdataold.SetEntry(iEntry);
-    //F3 Data
-    for (int i = 0, maxi=rawdataold.PL3_QRaw.GetSize(); i < maxi; ++i) {
-      PL3_QRaw[i]=rawdataold.PL3_QRaw[i];
-    }
-    for (int i = 0, maxi=rawdataold.PL3_MHit.GetSize(); i < maxi; ++i) {
-      PL3_MHit[i]=rawdataold.PL3_MHit[i];
-    }
-
-    for (int i = 0, maxi=rawdataold.IC3Raw.GetSize(); i < maxi; ++i) {
-      F3IC[i]=rawdataold.IC3Raw[i];
-    }
-    F3ICSum=rawdataold.GetICESum(3);
-    F3ICGas = rawdataold.GetIC_GasRaw(rawdataold.F3);
-
-    rawdataold.SetPPACTrack(3);
-
-    F3X=rawdataold.GetFocusPointX_mm(3);
-    F3Y=rawdataold.GetFocusPointY_mm(3);
-    F3A=rawdataold.GetFocusPointA_mrad(3);
-    F3B=rawdataold.GetFocusPointB_mrad(3);
-    F7TSumX=rawdataold.GetTSumX(3);
-
-    /*	  F3TSumY=rawdataold.GetTSumY(3);*/
-
-
-    //F5 Data
-
-    for (int i = 0, maxi=rawdataold.PL5_QRaw.GetSize(); i < maxi; ++i) {
-      PL5_QRaw[i]=rawdataold.PL5_QRaw[i];
-    }
-    for (int i = 0, maxi=rawdataold.PL5_MHit.GetSize(); i < maxi; ++i) {
-      PL5_MHit[i]=rawdataold.PL5_MHit[i];
-    }
-    for (int i = 0, maxi=rawdataold.IC5Raw.GetSize(); i < maxi; ++i) {
-      F5IC[i]=rawdataold.IC5Raw[i];
-    }
-    F5ICSum=rawdataold.GetICESum(5);
-
-    rawdataold.SetPPACTrack(5);
-
-    F5X=rawdataold.GetFocusPointX_mm(5);
-    F5Y=rawdataold.GetFocusPointY_mm(5);
-    F5A=rawdataold.GetFocusPointA_mrad(5);
-    F5B=rawdataold.GetFocusPointB_mrad(5);
-
-    F5PLQ_X = rawdataold.GetPLQX(5);
-
-
-
-
-
-
-    
-    //F7 Data
-    for (int i = 0, maxi=rawdataold.PL7_QRaw.GetSize(); i < maxi; ++i) {
-      PL7_QRaw[i]=rawdataold.PL7_QRaw[i];
-    }
-    for (int i = 0, maxi=rawdataold.PL7_MHit.GetSize(); i < maxi; ++i) {
-      PL7_MHit[i]=rawdataold.PL7_MHit[i];
-    }
-    for (int i = 0, maxi=rawdataold.IC7Raw.GetSize(); i < maxi; ++i) {
-      F7IC[i]=rawdataold.IC7Raw[i];
-    }
-
-    F7ICSum=rawdataold.GetICESum(7);
-    rawdataold.SetPPACTrack(7);
-    F7X=rawdataold.GetFocusPointX_mm(7);
-    F7Y=rawdataold.GetFocusPointY_mm(7);
-    F7A=rawdataold.GetFocusPointA_mrad(7);
-    F7B=rawdataold.GetFocusPointB_mrad(7);
-
-
-
-    
-
-
-
-    //F9 Data
-
-    rawdataold.SetPPACTrack(9);
-    F9X=rawdataold.GetFocusPointX_mm(9);
-    F9Y=rawdataold.GetFocusPointY_mm(9);
-    F9A=rawdataold.GetFocusPointA_mrad(9);
-    F9B=rawdataold.GetFocusPointB_mrad(9);
-
-
-
-
-
-
-    //F11 Data
-    for (int i = 0, maxi=rawdataold.PL11_QRaw.GetSize(); i < maxi; ++i) {
-      PL11_QRaw[i]=rawdataold.PL11_TRaw[i];
-    }
-    for (int i = 0, maxi=rawdataold.PL11_MHit.GetSize(); i < maxi; ++i) {
-      PL11_MHit[i]=rawdataold.PL11_MHit[i];
-    }
-    for (int i = 0, maxi=rawdataold.GSIICERaw.GetSize(); i < maxi; ++i) {
-      if(i/8==0){
-      MUSIC1[i]=rawdataold.GSIICERaw[i];
-      }
-      else if(i/8==1){
-      MUSIC2[i-8]=rawdataold.GSIICERaw[i-8];
-      }
-    }
-    
-    MUSIC1Sum=rawdataold.GetICESum(11);
-    MUSIC2Sum=rawdataold.GetIC2ESum(11);
-
-    rawdataold.SetPPACTrack(11);
-    F11X=rawdataold.GetFocusPointX_mm(11);
-    F11Y=rawdataold.GetFocusPointY_mm(11);
-    F11A=rawdataold.GetFocusPointA_mrad(11);
-    F11B=rawdataold.GetFocusPointB_mrad(11);
-
-
-    //TOF
-    TOF35 = rawdataold.GetLeadingEdgeTOF(3,5);
-    TOF57 = rawdataold.GetLeadingEdgeTOF(5,7);
-    TOF711 = rawdataold.GetLeadingEdgeTOF(0,11);
-
-    //    cout<<F3X<<endl;
-
-
-    //PID
-    RIBF123PID pid;
-    pid.SetDataForAoQ(TOF35,rawdataold.Dipole[4],F3X,F5PLQ_X,F3A,3,5,3,5);
-    AoQ35 = pid.GetAoQ(3,5);
-    Delta35 = pid.GetDelta(3,5);
-
-    pid.SetDataForZ(TOF35, 3, 5, 3, 5, F3X, F5PLQ_X, F3A, 3, F3ICSum, 1, F3B);
-    Z3 = pid.GetZ(3);
-    Beta35 = pid.GetBeta(3,5);
-    
-
-    
-    /*
-    if(AoQ35>1&&AoQ35<3){ // this is bad, it will not preserve correspondence to raw files
-      tree->Fill();       // its better to preset variables with dummy values to know whent to draw or analyze 
-    }
-    */
-    
-    //    std::cout<<Posx[0]<<std::endl;
     tree->Fill();
      
   }
