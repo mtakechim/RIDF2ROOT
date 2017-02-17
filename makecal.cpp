@@ -250,10 +250,10 @@ int main(int argc, char* argv[]){
     cal.MUSIC1Mean = music1.mean;
     cal.MUSIC2Mean = music2.mean;
     
-    cal.Z3 = cal.F3ICMean*cal.Beta35*cal.Beta35;
-    cal.Z5 = cal.F5ICMean*cal.Beta57*cal.Beta57;
-    cal.Z7 = cal.F7ICMean*cal.Beta57*cal.Beta57;
-    cal.Z11 = cal.MUSIC1Mean*cal.Beta711*cal.Beta711;
+    cal.Z3 = TMath::Sqrt(cal.F3ICMean*cal.Beta35*cal.Beta35);
+    cal.Z5 = TMath::Sqrt(cal.F5ICMean*cal.Beta57*cal.Beta57);
+    cal.Z7 = TMath::Sqrt(cal.F7ICMean*cal.Beta57*cal.Beta57);
+    cal.Z11 = TMath::Sqrt(cal.MUSIC1Mean*cal.Beta711*cal.Beta711);
     
     
     
