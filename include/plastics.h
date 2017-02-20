@@ -7,6 +7,8 @@
 class Plastics{
     public:
     double xq=999;
+    double x_tdif;
+    double x_mtdif;
     double t;
     double t_dif;
     double t_cfd;
@@ -81,6 +83,16 @@ Plastics::Plastics(FP i, rawdata &raw):index(i){
 	    mt_right_nhit = &raw.PL11_MHit[1];
 	    break;
 	    }
+	case F11B: {
+	    qdata=&raw.PL11_QRaw[2];
+	    tdata=&raw.PL11_TRaw[2];
+	    tcfddata=&raw.PL11_CFDRaw[2];
+	    mt_left=raw.PL11_MTRaw[2];
+	    mt_right=raw.PL11_MTRaw[3];
+	    mt_left_nhit = &raw.PL11_MHit[2];
+	    mt_right_nhit = &raw.PL11_MHit[3];
+	    break;
+	    }
 	default: {
 	    std::cout<<"Error: Default plastics configuration not found "<<"\n";
 	    break;
@@ -91,6 +103,8 @@ Plastics::Plastics(FP i, rawdata &raw):index(i){
 
 void Plastics::clear(){
     xq = -200;
+    x_tdif = -200;
+    x_mtdif = -200;
     t = -9999;
     t_dif = -9999;
     t_cfd = -9999;
@@ -117,6 +131,7 @@ void Plastics::calculate(){
 	t = ch2ns_PL[index][0]*tdata[0]+ch2ns_PL[index][1]*tdata[1];
 	t = t/2.0;
 	t_dif = (ch2ns_PL[index][0]*tdata[0]) - (ch2ns_PL[index][1]*tdata[1]);
+	x_tdif = PL_t_mm[index][0] + t_dif*PL_t_mm[index][1];
     }
     
     // mean time left + right / 2
@@ -127,10 +142,11 @@ void Plastics::calculate(){
     }
     
     // mean time from V1290
-    if(mt_left != nullptr && mt_right != nullptr && *mt_left_nhit>0 && *mt_left_nhit>0){
+    if(mt_left != nullptr && mt_right != nullptr && *mt_left_nhit>0 && *mt_right_nhit>0){
 	mt = mt_left[0]+mt_right[0]- *mt_time_ref - *mt_time_ref;
 	mt = 0.025*mt/2.;
 	mt_dif = 0.025*(mt_left[0]- mt_right[0]);
+	x_mtdif = PL_mt_mm[index][0] + mt_dif*PL_mt_mm[index][1];
     }
 }
 
@@ -167,13 +183,13 @@ double tof(Plastics &start, Plastics &stop, Timing_t mode){
     else if(imode >= 0 && start.index == 5 && stop.index==7){
 	offset = parameters::TOFoffset[1][imode];
     }
-    else if(imode >= 0 && start.index == 7 && stop.index==11){
+    else if(imode >= 0 && start.index == 7 && (stop.index==11 || stop.index==0)){
 	offset = parameters::TOFoffset[2][imode];
     }
     else{
 	offset = 0;
     }
-    return tof+ offset;
+    return tof + offset;
 }
 
 

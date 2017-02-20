@@ -4,6 +4,7 @@
 
 class IC{
     public:
+    int index=-1;
     double sum=-1;
     double mean=-1;
     double gmean=-1;
@@ -14,6 +15,7 @@ class IC{
     IC(int num, int* _data, int* _time_data=nullptr):nanodes(num),data(_data),time(_time_data){};
     double get_total(){return sum;};
     double get_mean(){return mean;};
+    void set_index(int i){index=i;};
     int fired_anodes(){return fired;};
     void threshold(int t){th=t;};
     
