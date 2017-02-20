@@ -6,7 +6,7 @@
 // config
 #define PLASTICS_DETAILS 1
 //#define PPAC_DETAILS 1  // output ppac sums and partial positions
-//#define IC_RAW 1  // output IC Raw data
+#define IC_RAW 1  // output IC Raw data
 #define PPAC_TRACKS 1
 
 #include "makecal.h"
@@ -79,17 +79,19 @@ int main(int argc, char* argv[]){
   music2.threshold(50);
   
   // Plastics
-  Plastics pl11long(0,raw.PL11long_QRaw);
+  Plastics pl11long(1,raw.PL11long_QRaw);
   pl11long.set_mtdc_data(raw.PL11long_MTRaw[0],raw.PL11long_MTRaw[1],&raw.PL11_MHit[0],&raw.PL11_MHit[1],&raw.tV1290);
   Plastics pl3(F3,raw);
   Plastics pl5(F5,raw);
   Plastics pl7(F7,raw);
   Plastics pl11(F11,raw);
+  Plastics pl11b(F11B,raw);
    
   pl3.set_qdc_threshold(50);
   pl5.set_qdc_threshold(50);
   pl7.set_qdc_threshold(50);
   pl11.set_qdc_threshold(50);
+  pl11b.set_qdc_threshold(50);
   pl11long.set_qdc_threshold(50);
   
   pl3.set_tdc_threshold(1);
@@ -143,6 +145,12 @@ int main(int argc, char* argv[]){
   tree->Branch("IC5Raw",raw.IC5Raw,"IC5Raw[5]/I");
   tree->Branch("IC7Raw",raw.IC7Raw,"IC7Raw[6]/I");
   #endif
+  tree->Branch("F3IC_nanodes",&f3ic.fired,"F3IC_nanodes/I");
+  tree->Branch("F5IC_nanodes",&f5ic.fired,"F5IC_nanodes/I");
+  tree->Branch("F7IC_nanodes",&f7ic.fired,"F7IC_nanodes/I");
+  tree->Branch("MUSIC1_nanodes",&music1.fired,"MUSIC1_nanodes/I");
+  tree->Branch("MUSIC2_nanodes",&music2.fired,"MUSIC2_nanodes/I");
+  
   
   #ifdef PPAC_DETAILS
   tree->Branch("PPAC3_posx",ppac3.posx,"PPAC3_posx[4]/D");
@@ -159,13 +167,22 @@ int main(int argc, char* argv[]){
   tree->Branch("PPAC11_tsumy",ppac11.tsumy,"PPAC11_tsumy[4]/D");
   #endif
   
-  #ifdef PLASTICS_DETAILS
+  #ifdef PLASTICS_DETAILS  
+  tree->Branch("PL3_x_tdif",&pl3.x_tdif,"PL3_x_tdif/D");
+  tree->Branch("PL5_x_tdif",&pl5.x_tdif,"PL5_x_tdif/D");
+  tree->Branch("PL7_x_tdif",&pl7.x_tdif,"PL7_x_tdif/D");
+  tree->Branch("PL11_xa_mtdif",&pl11.x_mtdif,"PL11_xa_mtdif/D");
+  tree->Branch("PL11_xb_mtdif",&pl11b.x_mtdif,"PL11_xb_mtdif/D");
+  
   tree->Branch("PL3_tdif",&pl3.t_dif,"PL3_tdif/D");
   tree->Branch("PL5_tdif",&pl5.t_dif,"PL5_tdif/D");
   tree->Branch("PL7_tdif",&pl7.t_dif,"PL7_tdif/D");
+  tree->Branch("PL11_tdif",&pl11.t_dif,"PL11_tdif/D");
   tree->Branch("PL3_mtdif",&pl3.mt_dif,"PL3_mtdif/D");
   tree->Branch("PL5_mtdif",&pl5.mt_dif,"PL5_mtdif/D");
   tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
+  tree->Branch("PL11_mtdif",&pl11.mt_dif,"PL11_mtdif/D");
+  tree->Branch("PL11B_mtdif",&pl11b.mt_dif,"PL11B_mtdif/D");
   #endif
   
   // Additional tracking
@@ -186,6 +203,10 @@ int main(int argc, char* argv[]){
     if(iEntry%1000==0)cout << 100*iEntry/num <<" % "<< flush << "\r";
     cal.clear_variables();
     rawtree->GetEntry(iEntry);
+  
+    for(int i=0;i<6;i++){
+        raw.IC3Raw[i] *=parameters::F3IC_anodes_norms[i];
+    }
 
     f3ic.calculate();    
     f5ic.calculate();
@@ -196,6 +217,7 @@ int main(int argc, char* argv[]){
     pl5.calculate();
     pl7.calculate();
     pl11.calculate();
+    pl11b.calculate();
     pl11long.calculate();
     ppac3.calculate();
     ppac5.calculate();
@@ -278,6 +300,10 @@ int main(int argc, char* argv[]){
     cal.MUSIC1de = music1.mean*cal.Beta711*cal.Beta711;
     cal.MUSIC2de = music2.mean*cal.Beta711*cal.Beta711;
     
+    // angular correction
+    if(cal.F3B>-200){
+      cal.F3ICde *=(1-0.0002*cal.F3B);
+      }
     
     cal.Z3 = TMath::Sqrt(cal.F3ICde);
     cal.Z5 = TMath::Sqrt(cal.F5ICde);

@@ -1,7 +1,7 @@
 #ifndef parameters_h
 #define parameters_h
 
-enum FP {F1=1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11};  
+enum FP {F1=1, F2=2, F3=3, F4=4, F5=5, F6=6, F7=7, F8=8, F9=9, F10=10, F11=11, F11B=0};  
 enum Timing_t {LE, CFD, LE_SLEW, V1290};
 enum PID_t {F35,F57,F711};
 
@@ -20,6 +20,38 @@ double PLQch2mm0[12]={0.,0.,0.,0.,0.,-61.72,    0.,0.,0.,0.,0.,0.};
 double PLQch2mm1[12]={0.,0.,0.,0.,0.,0.1057,    0.,0.,0.,0.,0.,0.};
 double PLQch2mm2[12]={0.,0.,0.,0.,0.,3.348E-05, 0.,0.,0.,0.,0.,0.};
 double PLQch2mm3[12]={0.,0.,0.,0.,0.,-2.012E-08,0.,0.,0.,0.,0.,0.};
+
+double PL_t_mm[12][2] = {  // time to mm std TDC
+  {-999,0}, //F11 plastics PMT 3,4
+  {0,0},  
+  {0,0},  
+  {47.9,-18.0},  // F3plastics
+  {0,0}, 
+  {-77.4,-27.09}, //F5 plastics
+  {0,0},
+  {-46.34,-35.36}, //F7 plastics
+  {0,0},
+  {0,0},
+  {0,0},
+  {-999,0}, //F11 plastics PMT 1,2
+};
+
+double PL_mt_mm[12][2] = { //time to mm V1290
+  {5.11,-22.22}, //F11 plastics PMT 3,4
+  {0,0},  
+  {0,0},  
+  {-999,0},  // F3plastics
+  {0,0}, 
+  {-999,0}, //F5 plastics
+  {0,0},
+  {-999,0}, //F7 plastics
+  {0,0},
+  {0,0},
+  {0,0},
+  {-41.4176,-37.94} //F11 plastics PMT 1,2
+};
+
+double F3IC_anodes_norms[6] = {6*0.188,6*0.15548, 6*0.1463, 6*0.1271, 6*0.1467255, 6*0.21594};
 
 
 //===== Calibration ======================================
