@@ -120,7 +120,7 @@ void Plastics::calculate(){
     
     // X position from QDC 
     if(qdata!=nullptr && qdata[0]>qth && qdata[1]>qth){ //check if both QDC are valid
-	double dif=  qdata[0]-qdata[1];
+      double dif=  double(qdata[0]-qdata[1])/double(qdata[0]+qdata[1]);
 	xq = PLQch2mm0[index]+PLQch2mm1[index]*(dif)
 	    +PLQch2mm2[index]*(dif*dif)
 	    +PLQch2mm3[index]*(dif*dif*dif);
