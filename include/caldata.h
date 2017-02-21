@@ -54,6 +54,9 @@ struct caldata{
     Double_t TOF35;
     Double_t TOF57;
     Double_t TOF711;
+    Double_t TOF711m;
+    Double_t TOF711a;
+    Double_t TOF711b;
     
     Double_t F3PLQ_X;
     Double_t F5PLQ_X;
@@ -77,6 +80,7 @@ struct caldata{
     Double_t AoQ711;
     Double_t Delta711;
     Double_t Beta711;
+    Double_t Beta711m;
     Double_t Brho711;
     
     //Charges
@@ -152,6 +156,9 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("TOF35",&TOF35,"TOF35/D");
     tree->Branch("TOF57",&TOF57,"TOF57/D");
     tree->Branch("TOF711",&TOF711,"TOF711/D");
+    tree->Branch("TOF711m",&TOF711m,"TOF711m/D");
+    tree->Branch("TOF711a",&TOF711a,"TOF711a/D");
+    tree->Branch("TOF711b",&TOF711b,"TOF711b/D");
     
     tree->Branch("F3PLQ_X",&F3PLQ_X,"F3PLQ_X/D");
     tree->Branch("F5PLQ_X",&F5PLQ_X,"F5PLQ_X/D");
@@ -172,6 +179,7 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("AoQ711",&AoQ711,"AoQ711/D");
     tree->Branch("Delta711",&Delta711,"Delta711/D");
     tree->Branch("Beta711",&Beta711,"Beta711/D");
+    tree->Branch("Beta711m",&Beta711m,"Beta711m/D");
     tree->Branch("Brho711",&Brho711,"Brho711/D");
 
     tree->Branch("Z3",&Z3,"Z3/D");
@@ -182,7 +190,92 @@ void caldata::set_branches(TTree *tree){
 }
 
 void caldata::set_branch_addresses(TTree *tree){
-    
-}
+    tree->SetBranchAddress("Nevent",&Nevent);
 
+    tree->SetBranchAddress("F3X",&F3X);
+    tree->SetBranchAddress("F5X",&F5X);
+    tree->SetBranchAddress("F7X",&F7X);
+    tree->SetBranchAddress("F9X",&F9X);
+    tree->SetBranchAddress("F11X",&F11X);
+  
+    tree->SetBranchAddress("F3Y",&F3Y);
+    tree->SetBranchAddress("F5Y",&F5Y);
+    tree->SetBranchAddress("F7Y",&F7Y);
+    tree->SetBranchAddress("F9Y",&F9Y);
+    tree->SetBranchAddress("F11Y",&F11Y);
+  
+    tree->SetBranchAddress("F3A",&F3A);
+    tree->SetBranchAddress("F5A",&F5A);
+    tree->SetBranchAddress("F7A",&F7A);
+    tree->SetBranchAddress("F9A",&F9A);
+    tree->SetBranchAddress("F11A",&F11A);
+  
+    tree->SetBranchAddress("F3B",&F3B);
+    tree->SetBranchAddress("F5B",&F5B);
+    tree->SetBranchAddress("F7B",&F7B);
+    tree->SetBranchAddress("F9B",&F9B);
+    tree->SetBranchAddress("F11B",&F11B);
+  
+    tree->SetBranchAddress("F3ICGas",&F3ICGas);
+    tree->SetBranchAddress("F3ICSum",&F3ICSum);
+    tree->SetBranchAddress("F5ICSum",&F5ICSum);    
+    tree->SetBranchAddress("F7ICSum",&F7ICSum);
+    tree->SetBranchAddress("MUSIC1Sum",&MUSIC1Sum);
+    tree->SetBranchAddress("MUSIC2Sum",&MUSIC2Sum);
+    
+    tree->SetBranchAddress("F3ICMean",&F3ICMean);
+    tree->SetBranchAddress("F5ICMean",&F5ICMean);    
+    tree->SetBranchAddress("F7ICMean",&F7ICMean);
+    tree->SetBranchAddress("MUSIC1Mean",&MUSIC1Mean);
+    tree->SetBranchAddress("MUSIC2Mean",&MUSIC2Mean);
+    
+    tree->SetBranchAddress("F3ICGMean",&F3ICGMean);
+    tree->SetBranchAddress("F5ICGMean",&F5ICGMean);    
+    tree->SetBranchAddress("F7ICGMean",&F7ICGMean);
+    tree->SetBranchAddress("MUSIC1GMean",&MUSIC1GMean);
+    tree->SetBranchAddress("MUSIC2GMean",&MUSIC2GMean);
+    
+    tree->SetBranchAddress("F3ICde",&F3ICde);
+    tree->SetBranchAddress("F5ICde",&F5ICde);    
+    tree->SetBranchAddress("F7ICde",&F7ICde);
+    tree->SetBranchAddress("MUSIC1de",&MUSIC1de);
+    tree->SetBranchAddress("MUSIC2de",&MUSIC2de);
+
+
+    tree->SetBranchAddress("TOF35",&TOF35);
+    tree->SetBranchAddress("TOF57",&TOF57);
+    tree->SetBranchAddress("TOF711",&TOF711);
+    tree->SetBranchAddress("TOF711m",&TOF711m);
+    tree->SetBranchAddress("TOF711a",&TOF711a);
+    tree->SetBranchAddress("TOF711b",&TOF711b);
+    
+    tree->SetBranchAddress("F3PLQ_X",&F3PLQ_X);
+    tree->SetBranchAddress("F5PLQ_X",&F5PLQ_X);
+    tree->SetBranchAddress("F7PLQ_X",&F7PLQ_X);
+    tree->SetBranchAddress("F11PLQ_X",&F11PLQ_X);
+    tree->SetBranchAddress("F11longPLQ_X",&F11longPLQ_X);
+
+    tree->SetBranchAddress("AoQ35",&AoQ35);
+    tree->SetBranchAddress("Delta35",&Delta35);
+    tree->SetBranchAddress("Beta35",&Beta35);
+    tree->SetBranchAddress("Brho35",&Brho35);
+    
+    tree->SetBranchAddress("AoQ57",&AoQ57);
+    tree->SetBranchAddress("Delta57",&Delta57);
+    tree->SetBranchAddress("Beta57",&Beta57);
+    tree->SetBranchAddress("Brho57",&Brho57);
+    
+    tree->SetBranchAddress("AoQ711",&AoQ711);
+    tree->SetBranchAddress("Delta711",&Delta711);
+    tree->SetBranchAddress("Beta711",&Beta711);
+    tree->SetBranchAddress("Beta711m",&Beta711m);
+    tree->SetBranchAddress("Brho711",&Brho711);
+
+    tree->SetBranchAddress("Z3",&Z3);
+    tree->SetBranchAddress("Z5",&Z5);
+    tree->SetBranchAddress("Z7",&Z7);
+    tree->SetBranchAddress("Z11",&Z11);
+    tree->SetBranchAddress("Z11at",&Z11at);
+}
+ 
 #endif
