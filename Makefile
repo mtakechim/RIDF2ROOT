@@ -1,5 +1,5 @@
 all: makecal
-FILES = ./include/pid.h ./include/ic.h ./include/ppac.h ./include/plastics.h ./include/parameters.h
+FILES = ./include/pid.h ./include/ic.h ./include/ppac.h ./include/plastics.h ./include/parameters.h ./include/caldata.h
 ROOTCFLAGS  = $(shell $(CFG_ROOT_BIN)root-config --cflags)
 ROOTLIBS    = $(shell $(CFG_ROOT_BIN)root-config --libs)
 

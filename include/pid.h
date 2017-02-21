@@ -7,6 +7,8 @@
 #include "parameters.h"
 #include "ribf123_rawvar.h"
 
+enum class focal_planes_t {achromatic_dispersive, dispersive_achromatic, achromatic_dispersive_achromatic};
+
 class PID{
     public:
     double beta;
@@ -33,7 +35,9 @@ class PID{
     FP initial_fp;
     FP final_fp;
     PID_t idt;
+    focal_planes_t fp_type;
     double *tmatrix=nullptr;
+    double *tmatrix2=nullptr;
     
     PID(FP fp1, FP fp2);
     void set_plastics(Plastics *p1, Plastics *p2){pl_i = p1; pl_f = p2;};
@@ -44,6 +48,8 @@ class PID{
     void set_matrix(double m[6][6]){tmatrix = &m[0][0];};
     void set_dipoles(double *d){dipole = d;};
     double matrix(int i, int j){return tmatrix[(6*i) + j];};
+    double matrix1(int i, int j){return matrix(i,j);};
+    double matrix2(int i, int j){return tmatrix2[(6*i) + j];};
     
     void clear();
     void calculate();
@@ -53,12 +59,15 @@ class PID{
 PID::PID(FP fp1, FP fp2):initial_fp(fp1),final_fp(fp2){
     if(fp1==F3 && fp2==F5){
         idt = F35;
+        fp_type = focal_planes_t::achromatic_dispersive;
     }
     else if(fp1==F5 && fp2==F7){
         idt = F57;
+        fp_type = focal_planes_t::dispersive_achromatic;
     }
     else if(fp1==F7 && fp2==F11){
         idt = F711;
+        fp_type = focal_planes_t::dispersive_achromatic;
     }
     else{
     }
@@ -104,26 +113,55 @@ void PID::calculate(){
         angle = 0.0; 
     }
     
-    if(*xf>-200){ // check if we have position at pressumably disp. focal plane
-        dx = *xf;
-        if(*xi>-200){                   // if we have position from initial focal plane
-            dx += - (*xi)*matrix(0,0);  // subtract init position*magnification
-        }
-        delta = ( dx - angle*matrix(0,1))/dispersion;
-    }
-    else{ // no position at the final focal plane, so lets assign default value
-        delta = 0;
+    switch(fp_type){
+        case focal_planes_t::achromatic_dispersive : {
+            if(*xf>-200){ // check if we have position at pressumably disp. focal plane
+                dx = *xf;
+                if(*xi>-200){                   // if we have position from initial focal plane
+                    dx += - (*xi)*matrix(0,0);  // subtract init position*magnification
+                    }
+                delta = ( dx - angle*matrix(0,1))/dispersion;
+                }
+            break;
+        } // end of achromatic-dispersive setting
+        
+        case focal_planes_t::dispersive_achromatic : {
+            if(*xi>-200){ // check if we have position at pressumably disp. focal plane
+                dx = -(*xi)*matrix(0,0);
+                if(*xf>-200){             // if we have position from achromatic focal
+                    dx += (*xf);        // subtract it 
+                    }
+                delta = ( dx - angle*matrix(0,1))/dispersion;
+                }
+            break;
+        }// end of dispersive-achromatc setting
+        
+        case focal_planes_t::achromatic_dispersive_achromatic : {
+            if(*xi>-200){ // check if we have position at pressumably disp. focal plane
+                dx = -(*xi)*matrix(0,0);
+                if(*xf>-200){             // if we have position from achromatic focal
+                    dx += (*xf);        // subtract it 
+                    }
+                delta = ( dx - angle*matrix(0,1))/dispersion;
+                }
+            break;
+        }// end of dispersive-achromatc setting
+        
+        
+        default:break;
+    
     }
     
-    tof_dl = (matrix(4,0)*(*xi) + matrix(4,1)*angle + matrix(4,5)*delta);  
-    if(*xf>-200)
-        delta = ( dx - angle*matrix(0,1))/dispersion;
-    else delta = -999; // make delta wrong for brho calculation
-    
-    brho = (1+(delta/100.))*dipole_brho();
+    // correct TOF path
+    tof_dl = (matrix(4,0)*(*xi) + matrix(4,1)*angle);  
+    if(delta>-10) tof_dl += matrix(4,5)*delta; 
     beta = ( tof_dl+1000.*distance)/c/(*tof);
     gamma = 1/TMath::Sqrt(1 - (beta*beta));
-    aoq = c*brho/beta/gamma/mass_unit;
+    
+    if(delta>-10 && beta>0 && beta<1){
+        brho = (1+(delta/100.))*dipole_brho();    
+        aoq = c*brho/beta/gamma/mass_unit;
+        }
     /*
     std::cout<<"-----------"<<"\n";
     std::cout<<*xi<<" "<<*xf<<" "<<*ai<<" "<<*af<<std::endl;
