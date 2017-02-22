@@ -212,8 +212,13 @@ int main(int argc, char* argv[]){
     cal.clear_variables();
     rawtree->GetEntry(iEntry);
   
+  // IC anodes normalization
     for(int i=0;i<6;i++){
         raw.IC3Raw[i] *=parameters::F3IC_anodes_norms[i];
+    }
+    
+    for(int i=0;i<5;i++){
+        raw.IC5Raw[i] *=parameters::F5IC_anodes_norms[i];
     }
 
     f3ic.calculate();    
