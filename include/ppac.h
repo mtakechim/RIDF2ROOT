@@ -82,10 +82,11 @@ void PPAC::calculate(){
     if( (bx[0] || bx[1]) && (bx[2] || bx[3])){
         for(int j=0;j<4;j++){
             if(bx[j]){
+                double z = parameters::Zpos[0][index][j]+parameters::Zoffset[index];
                 sum_x += posx[j];
-                sum_z += parameters::Zpos[0][index][j];
-                sum_zz+= parameters::Zpos[0][index][j]*parameters::Zpos[0][index][j];
-                sum_xz+= posx[j]*parameters::Zpos[0][index][j];
+                sum_z += z;
+                sum_zz+= z*z;
+                sum_xz+= posx[j]*z;
                 nx++;
             }
             else{
@@ -106,10 +107,11 @@ void PPAC::calculate(){
     if( (by[0] || by[1]) && (by[2] || by[3])){
         for(int j=0;j<4;j++){
             if(by[j]){
+                double z = parameters::Zpos[1][index][j]+parameters::Zoffset[index];
                 sum_y += posy[j];
-                sum_z += parameters::Zpos[0][index][j];
-                sum_zz+= parameters::Zpos[0][index][j]*parameters::Zpos[0][index][j];
-                sum_yz+= posy[j]*parameters::Zpos[0][index][j];
+                sum_z += z;
+                sum_zz+= z*z;
+                sum_yz+= posy[j]*z;
                 ny++;
             }
             else{
