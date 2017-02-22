@@ -104,11 +104,13 @@ int main(int argc, char* argv[]){
   PPAC ppac3(3,raw.PPAC3_QRaw,raw.PPAC3_TRaw,raw.PPAC3_AQRaw,raw.PPAC3_ATRaw);
   PPAC ppac5(5,raw.PPAC5_QRaw,raw.PPAC5_TRaw,raw.PPAC5_AQRaw,raw.PPAC5_ATRaw);
   PPAC ppac7(7,raw.PPAC7_QRaw,raw.PPAC7_TRaw,raw.PPAC7_AQRaw,raw.PPAC7_ATRaw);
+  PPAC ppac9(9,raw.PPAC9_QRaw,raw.PPAC9_TRaw,raw.PPAC9_AQRaw,raw.PPAC9_ATRaw);
   PPAC ppac11(11,raw.PPAC11_QRaw,raw.PPAC11_TRaw,raw.PPAC11_AQRaw,raw.PPAC11_ATRaw);
   
   ppac3.overflow = 570;
   ppac5.overflow = 570;
   ppac7.overflow = 570;
+  ppac9.overflow = 570;
   ppac11.overflow = 570;
   
   
@@ -127,6 +129,12 @@ int main(int argc, char* argv[]){
   id_57.set_angles(&cal.F5A,&cal.F5B,&cal.F7A,&cal.F7B);
   id_57.set_dipoles(raw.Dipole);
   
+  PID id_711(F7,F11);
+  id_711.set_matrix(parameters::Mat911);
+  id_711.set_tof(&cal.TOF711m);
+  id_711.set_positions(&cal.F9X,&cal.F9Y,&cal.F11X,&cal.F11Y);
+  id_711.set_angles(&cal.F9A,&cal.F9B,&cal.F11A,&cal.F11B);
+  id_711.set_dipoles(raw.Dipole);
   
   
   // here copy some variables from raw to cal 
@@ -136,7 +144,7 @@ int main(int argc, char* argv[]){
   tree->Branch("PL3_MHit",raw.PL3_MHit,"PL3_MHit[2]/I");
   tree->Branch("PL5_MHit",raw.PL5_MHit,"PL5_MHit[2]/I");
   tree->Branch("PL7_MHit",raw.PL7_MHit,"PL7_MHit[2]/I");
-  tree->Branch("PL11_MHit",raw.PL11_MHit,"PL11_MHit[2]/I");
+  tree->Branch("PL11_MHit",raw.PL11_MHit,"PL11_MHit[4]/I");
   tree->Branch("PL11long_MHit",raw.PL11long_MHit,"PL11long_MHit[2]/I");
   
   #ifdef IC_RAW
@@ -222,6 +230,7 @@ int main(int argc, char* argv[]){
     ppac3.calculate();
     ppac5.calculate();
     ppac7.calculate();
+    ppac9.calculate();
     ppac11.calculate();
     
     cal.F3PLQ_X = pl3.xq;
@@ -245,6 +254,11 @@ int main(int argc, char* argv[]){
     cal.F7A = ppac7.a;
     cal.F7B = ppac7.b;
     
+    cal.F9X = ppac9.x;
+    cal.F9Y = ppac9.y;
+    cal.F9A = ppac9.a;
+    cal.F9B = ppac9.b;
+    
     cal.F11X = ppac11.x;
     cal.F11Y = ppac11.y;
     cal.F11A = ppac11.a;
@@ -261,6 +275,10 @@ int main(int argc, char* argv[]){
     cal.TOF57 = tof(pl5,pl7,LE);
     cal.TOF711 = tof(pl7,pl11,LE);
     
+    cal.TOF711a = tof(pl7,pl11,V1290);
+    cal.TOF711b = tof(pl7,pl11b,V1290);
+    cal.TOF711m = average(cal.TOF711a,cal.TOF711b,100,1000);
+    
     
     id_35.calculate();
     cal.Beta35 = id_35.beta;
@@ -272,7 +290,14 @@ int main(int argc, char* argv[]){
     cal.Beta57 = id_57.beta;
     cal.AoQ57 = id_57.aoq;
     cal.Delta57 = id_57.delta;
-    cal.Brho57 = id_57.delta;
+    cal.Brho57 = id_57.brho;
+    
+    id_711.calculate();
+    cal.Beta711 = id_711.beta;
+    cal.Beta711m = id_711.beta;
+    cal.AoQ711 = id_711.aoq;
+    cal.Delta711 = id_711.delta;
+    cal.Brho711 = id_711.brho;
     
     
     cal.F3ICGas = raw.IC_GasRaw[3];
@@ -305,10 +330,10 @@ int main(int argc, char* argv[]){
       cal.F3ICde *=(1-0.0002*cal.F3B);
       }
     
-    cal.Z3 = TMath::Sqrt(cal.F3ICde);
-    cal.Z5 = TMath::Sqrt(cal.F5ICde);
-    cal.Z7 = TMath::Sqrt(cal.F7ICde);
-    cal.Z11 = TMath::Sqrt(cal.MUSIC1de);
+    cal.Z3 = TMath::Sqrt(parameters::Z_de[0][1]*cal.F3ICde)+parameters::Z_de[0][0];
+    cal.Z5 = TMath::Sqrt(parameters::Z_de[1][1]*cal.F5ICde)+parameters::Z_de[1][0];
+    cal.Z7 = TMath::Sqrt(parameters::Z_de[2][1]*cal.F7ICde)+parameters::Z_de[2][0];
+    cal.Z11 = TMath::Sqrt(parameters::Z_de[3][1]*cal.MUSIC1de)+parameters::Z_de[3][0];
     
     tree->Fill();
      

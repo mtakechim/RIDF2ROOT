@@ -171,7 +171,7 @@ double tof(Plastics &start, Plastics &stop, Timing_t mode){
 		break;
 		}
 	case V1290:{
-		imode = -1;
+		imode = 3;
 		tof = stop.mt - start.mt;
 		break;
 	    }

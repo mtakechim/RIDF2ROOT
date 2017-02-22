@@ -13,6 +13,8 @@ class PPAC{
     int *at;
     int overflow=570;
     
+    bool bx[4];
+    bool by[4];
     double tcal[4][4];
     double tdiffx[4];
     double tdiffy[4];
@@ -41,6 +43,8 @@ void PPAC::clear(){
     for(int i=0;i<4;i++){
         posx[i]=-200.;
         posy[i]=-200.;
+        bx[i]=0;
+        by[i]=0;
     }
 }
 
