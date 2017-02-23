@@ -129,6 +129,22 @@ int main(int argc, char* argv[]){
   id_57.set_angles(&cal.F5A,&cal.F5B,&cal.F7A,&cal.F7B);
   id_57.set_dipoles(raw.Dipole);
   
+  PID id_37a(F3,F7);
+  id_37a.set_pid_type(F35); // define from where to take reference Brho
+  id_37a.set_matrix(parameters::Mat35);
+  id_37a.set_tof(&cal.TOF37);
+  id_37a.set_positions(&cal.F3X,&cal.F3Y,&cal.F5X,&cal.F5Y);
+  id_37a.set_angles(&cal.F3A,&cal.F3B,&cal.F5A,&cal.F5B);
+  id_37a.set_dipoles(raw.Dipole);
+  PID id_37b(F3,F7);
+  id_37b.set_pid_type(F57); // define from where to take reference Brho
+  id_37b.set_matrix(parameters::Mat57);
+  id_37b.set_tof(&cal.TOF37);
+  id_37b.set_positions(&cal.F5X,&cal.F5Y,&cal.F7X,&cal.F7Y);
+  id_37b.set_angles(&cal.F5A,&cal.F5B,&cal.F7A,&cal.F7B);
+  id_37b.set_dipoles(raw.Dipole);
+  
+  
   PID id_711(F7,F11);
   id_711.set_matrix(parameters::Mat911);
   id_711.set_tof(&cal.TOF711m);
@@ -278,6 +294,7 @@ int main(int argc, char* argv[]){
     
     cal.TOF35 = tof(pl3,pl5,LE);
     cal.TOF57 = tof(pl5,pl7,LE);
+    cal.TOF37 = cal.TOF35 + cal.TOF57;
     cal.TOF711 = tof(pl7,pl11,LE);
     
     cal.TOF711a = tof(pl7,pl11,V1290);
@@ -296,6 +313,11 @@ int main(int argc, char* argv[]){
     cal.AoQ57 = id_57.aoq;
     cal.Delta57 = id_57.delta;
     cal.Brho57 = id_57.brho;
+    
+    id_37a.calculate();
+    id_37b.calculate();
+    cal.Beta37 = id_37a.beta;
+    cal.AoQ37 = average(id_37a.aoq,id_37b.aoq,1.5,3);
     
     id_711.calculate();
     cal.Beta711 = id_711.beta;

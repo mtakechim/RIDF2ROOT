@@ -37,7 +37,6 @@ class PID{
     PID_t idt;
     focal_planes_t fp_type;
     double *tmatrix=nullptr;
-    double *tmatrix2=nullptr;
     
     PID(FP fp1, FP fp2);
     void set_plastics(Plastics *p1, Plastics *p2){pl_i = p1; pl_f = p2;};
@@ -47,9 +46,8 @@ class PID{
     void set_angles(double *_ai, double *_bi, double *_af, double *_bf){ai=_ai;bi=_bi;af=_af;bf=_bf;};
     void set_matrix(double m[6][6]){tmatrix = &m[0][0];};
     void set_dipoles(double *d){dipole = d;};
+    void set_pid_type(PID_t t){idt=t;};
     double matrix(int i, int j){return tmatrix[(6*i) + j];};
-    double matrix1(int i, int j){return matrix(i,j);};
-    double matrix2(int i, int j){return tmatrix2[(6*i) + j];};
     
     void clear();
     void calculate();
@@ -63,6 +61,14 @@ PID::PID(FP fp1, FP fp2):initial_fp(fp1),final_fp(fp2){
     }
     else if(fp1==F5 && fp2==F7){
         idt = F57;
+        fp_type = focal_planes_t::dispersive_achromatic;
+    }
+    else if(fp1==F7 && fp2==F9){
+        idt = F79;
+        fp_type = focal_planes_t::achromatic_dispersive;
+    }
+    else if(fp1==F9 && fp2==F11){
+        idt = F911;
         fp_type = focal_planes_t::dispersive_achromatic;
     }
     else if(fp1==F7 && fp2==F11){
@@ -182,6 +188,14 @@ double PID::dipole_brho(){
             break;
         }
         
+        case F79: {
+            res = dipole[7];
+            break;
+        }
+        case F911: {
+            res = dipole[8];
+            break;
+        }
         case F711: {
             res = (dipole[7] + dipole[8])/2.0;
             break;

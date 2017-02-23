@@ -153,25 +153,37 @@ void Plastics::calculate(){
 double tof(Plastics &start, Plastics &stop, Timing_t mode){
     double offset = 0;
     int imode = 0;
-    double tof = 0;
+    double tof = -9999;
+    
     switch(mode){
 	case LE:{ 
 		imode = 0;
-		tof = stop.t- start.t;
+        if(stop.t>-999 && start.t>-999){
+            tof = stop.t- start.t;
+            }
 		break;
 		}
 	case CFD:{ 
 		imode = 1;
+        if(stop.t_cfd>-999 && start.t_cfd>-999){
+            tof = stop.t- start.t;
+            }
 		tof = stop.t_cfd - start.t_cfd;
 		break;
 		}
 	case LE_SLEW:{ 
 		imode = 2;
+        if(stop.t>-999 && start.t>-999){
+            tof = stop.t- start.t;
+            }
 		tof = stop.t - start.t;  // still no slew correction, this needs to be updated
 		break;
 		}
 	case V1290:{
 		imode = 3;
+        if(stop.mt>-999 && start.mt>-999){
+            tof = stop.mt- start.mt;
+            }
 		tof = stop.mt - start.mt;
 		break;
 	    }

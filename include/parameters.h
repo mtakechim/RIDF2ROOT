@@ -3,7 +3,7 @@
 
 enum FP {F1=1, F2=2, F3=3, F4=4, F5=5, F6=6, F7=7, F8=8, F9=9, F10=10, F11=11, F11B=0};  
 enum Timing_t {LE, CFD, LE_SLEW, V1290};
-enum PID_t {F35,F57,F711};
+enum PID_t {F35,F57,F79,F911,F711};
 
 
 namespace parameters{
@@ -413,7 +413,7 @@ double  ch2MeV_Ge[2][2][4]={//[2]:Slope,Pedestal [2]:1,2 [4]:Crystal
 //===== Tracking ========================
 // the distance of the focus position from the ideal focus point along the z-axis at each Fpl.
 double Zoffset[12]={ 
-  0.,0.,0.,-50.,0.,60.,0.,190.,134.5,0.,0.,720.0,
+  0.,0.,0.,50.,0.,-60.,0.,-190.,0.0,0.,0.,720.0,
 };
 
 // the distance of the PPAC position from the upstream along z-axis at each Fpl.
