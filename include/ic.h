@@ -38,13 +38,13 @@ void IC::calculate(){
     double gsum = 1;
     for(int i=0;i<nanodes;i++){
 	if(data[i]<=th)continue;
-	fired++;
-	sum+=data[i];
-    gsum*=data[i];
+        fired++;
+        sum+=data[i];
+        gsum*=data[i];
     }
     if(fired>0){
-	mean = sum/fired;
-    gmean = TMath::Power(gsum,1.0/fired);
+        mean = sum/fired;
+        gmean = TMath::Power(gsum,1.0/fired);
 	}
 }
 
