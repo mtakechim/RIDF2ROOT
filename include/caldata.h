@@ -53,6 +53,7 @@ struct caldata{
     //Plastic
     Double_t TOF35;
     Double_t TOF57;
+    Double_t TOF37;
     Double_t TOF711;
     Double_t TOF711m;
     Double_t TOF711a;
@@ -82,6 +83,10 @@ struct caldata{
     Double_t Beta711;
     Double_t Beta711m;
     Double_t Brho711;
+    
+    //F3-F7
+    Double_t Beta37;
+    Double_t AoQ37;
     
     //Charges
     Double_t Z3;
@@ -154,6 +159,7 @@ void caldata::set_branches(TTree *tree){
 
 
     tree->Branch("TOF35",&TOF35,"TOF35/D");
+    tree->Branch("TOF37",&TOF37,"TOF37/D");
     tree->Branch("TOF57",&TOF57,"TOF57/D");
     tree->Branch("TOF711",&TOF711,"TOF711/D");
     tree->Branch("TOF711m",&TOF711m,"TOF711m/D");
@@ -175,6 +181,9 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("Delta57",&Delta57,"Delta57/D");
     tree->Branch("Beta57",&Beta57,"Beta57/D");
     tree->Branch("Brho57",&Brho57,"Brho57/D");
+    
+    tree->Branch("AoQ37",&AoQ37,"AoQ37/D");
+    tree->Branch("Beta37",&Beta37,"Beta37/D");
     
     tree->Branch("AoQ711",&AoQ711,"AoQ711/D");
     tree->Branch("Delta711",&Delta711,"Delta711/D");
@@ -243,6 +252,7 @@ void caldata::set_branch_addresses(TTree *tree){
 
 
     tree->SetBranchAddress("TOF35",&TOF35);
+    tree->SetBranchAddress("TOF37",&TOF37);
     tree->SetBranchAddress("TOF57",&TOF57);
     tree->SetBranchAddress("TOF711",&TOF711);
     tree->SetBranchAddress("TOF711m",&TOF711m);
