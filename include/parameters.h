@@ -16,10 +16,10 @@ double distance_PL5_focus = 400.0; // distance focus to plastic F5
 double distance_PL7_focus = 300.0; // distance focus to plastic F7
 double distance_PL11_focus = -432.0; // distance focus to plastic F11
 
-double PLQch2mm0[12]={0.,0.,0.,0.,0.,-61.72,    0.,0.,0.,0.,0.,0.};
-double PLQch2mm1[12]={0.,0.,0.,0.,0.,0.1057,    0.,0.,0.,0.,0.,0.};
-double PLQch2mm2[12]={0.,0.,0.,0.,0.,3.348E-05, 0.,0.,0.,0.,0.,0.};
-double PLQch2mm3[12]={0.,0.,0.,0.,0.,-2.012E-08,0.,0.,0.,0.,0.,0.};
+double PLQch2mm0[12]={0.,0.,0.,0.,0.,-30.581,    0.,0.,0.,0.,0.,0.};
+double PLQch2mm1[12]={0.,0.,0.,0.,0.,76.221,    0.,0.,0.,0.,0.,0.};
+double PLQch2mm2[12]={0.,0.,0.,0.,0.,10.012, 0.,0.,0.,0.,0.,0.};
+double PLQch2mm3[12]={0.,0.,0.,0.,0.,38.286,0.,0.,0.,0.,0.,0.};
 
 double PL_t_mm[12][2] = {  // time to mm std TDC
   {-999,0}, //F11 plastics PMT 3,4
