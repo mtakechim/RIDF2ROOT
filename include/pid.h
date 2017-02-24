@@ -47,6 +47,7 @@ class PID{
     void set_matrix(double m[6][6]){tmatrix = &m[0][0];};
     void set_dipoles(double *d){dipole = d;};
     void set_pid_type(PID_t t){idt=t;};
+    void set_focalplane_type(focal_planes_t t){fp_type=t;};
     double matrix(int i, int j){return tmatrix[(6*i) + j];};
     
     void clear();
@@ -126,6 +127,9 @@ void PID::calculate(){
                 if(*xi>-200){                   // if we have position from initial focal plane
                     dx += - (*xi)*matrix(0,0);  // subtract init position*magnification
                     }
+                else{
+                    dx += parameters::default_focal_position[initial_fp];
+                }
                 delta = ( dx - angle*matrix(0,1))/dispersion;
                 }
             break;
@@ -137,6 +141,9 @@ void PID::calculate(){
                 if(*xf>-200){             // if we have position from achromatic focal
                     dx += (*xf);        // subtract it 
                     }
+                else {
+                    dx += parameters::default_focal_position[final_fp];
+                }
                 delta = ( dx - angle*matrix(0,1))/dispersion;
                 }
             break;

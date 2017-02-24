@@ -7,6 +7,7 @@
 #define PLASTICS_DETAILS 1
 //#define PPAC_DETAILS 1  // output ppac sums and partial positions
 #define IC_RAW 1  // output IC Raw data
+#define IC_ANODES_NORMALIZATION
 #define PPAC_TRACKS 1
 
 #include "makecal.h"
@@ -72,11 +73,11 @@ int main(int argc, char* argv[]){
   IC music2(8,raw.GSIICERaw[1],raw.GSI1290Raw[8]);
   
   // set ADC thresholds
-  f3ic.threshold(50);
-  f5ic.threshold(50);
-  f7ic.threshold(50);
-  music1.threshold(50);
-  music2.threshold(50);
+  f3ic.threshold(100);
+  f5ic.threshold(100);
+  f7ic.threshold(100);
+  music1.threshold(100);
+  music2.threshold(100);
   
   // Plastics
   Plastics pl11long(1,raw.PL11long_QRaw);
@@ -131,6 +132,7 @@ int main(int argc, char* argv[]){
   
   PID id_37a(F3,F7);
   id_37a.set_pid_type(F35); // define from where to take reference Brho
+  id_37a.set_focalplane_type(focal_planes_t::achromatic_dispersive);
   id_37a.set_matrix(parameters::Mat35);
   id_37a.set_tof(&cal.TOF37);
   id_37a.set_positions(&cal.F3X,&cal.F3Y,&cal.F5X,&cal.F5Y);
@@ -138,6 +140,7 @@ int main(int argc, char* argv[]){
   id_37a.set_dipoles(raw.Dipole);
   PID id_37b(F3,F7);
   id_37b.set_pid_type(F57); // define from where to take reference Brho
+  id_37b.set_focalplane_type(focal_planes_t::dispersive_achromatic);
   id_37b.set_matrix(parameters::Mat57);
   id_37b.set_tof(&cal.TOF37);
   id_37b.set_positions(&cal.F5X,&cal.F5Y,&cal.F7X,&cal.F7Y);
@@ -207,6 +210,15 @@ int main(int argc, char* argv[]){
   tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
   tree->Branch("PL11_mtdif",&pl11.mt_dif,"PL11_mtdif/D");
   tree->Branch("PL11B_mtdif",&pl11b.mt_dif,"PL11B_mtdif/D");
+  
+  tree->Branch("Beta37a",&id_37a.beta,"Beta37a/D");
+  tree->Branch("Beta37b",&id_37b.beta,"Beta37b/D");
+  
+  tree->Branch("Delta37a",&id_37a.delta,"Delta37a/D");
+  tree->Branch("Delta37b",&id_37b.delta,"Delta37b/D");
+  
+  tree->Branch("AoQ37a",&id_37a.aoq,"AoQ37a/D");
+  tree->Branch("AoQ37b",&id_37b.aoq,"AoQ37b/D");
   #endif
   
   // Additional tracking
@@ -229,6 +241,7 @@ int main(int argc, char* argv[]){
     rawtree->GetEntry(iEntry);
   
   // IC anodes normalization
+  #ifdef IC_ANODES_NORMALIZATION
     for(int i=0;i<6;i++){
         raw.IC3Raw[i] *=parameters::F3IC_anodes_norms[i];
     }
@@ -236,6 +249,12 @@ int main(int argc, char* argv[]){
     for(int i=0;i<5;i++){
         raw.IC5Raw[i] *=parameters::F5IC_anodes_norms[i];
     }
+    /*
+    for(int i=0;i<6;i++){
+        raw.IC7Raw[i] *=parameters::F7IC_anodes_norms[i];
+    }
+    */ 
+  #endif
 
     f3ic.calculate();    
     f5ic.calculate();
@@ -310,14 +329,17 @@ int main(int argc, char* argv[]){
     
     id_57.calculate();
     cal.Beta57 = id_57.beta;
-    cal.AoQ57 = id_57.aoq;
+    cal.AoQ57 = id_57.aoq+0.02;
     cal.Delta57 = id_57.delta;
     cal.Brho57 = id_57.brho;
     
     id_37a.calculate();
     id_37b.calculate();
-    cal.Beta37 = id_37a.beta;
-    cal.AoQ37 = average(id_37a.aoq,id_37b.aoq,1.5,3);
+    //cal.Beta37 = average(id_37a.beta,id_37b.beta,0.3,1);
+    cal.Beta37 = average(id_35.beta,id_57.beta,0.3,1);
+    //cal.AoQ37 = average(id_37a.aoq,id_37b.aoq,1.5,3);
+    cal.AoQ37 = average(cal.AoQ35,cal.AoQ57,1.5,3);
+    
     
     id_711.calculate();
     cal.Beta711 = id_711.beta;
@@ -361,6 +383,7 @@ int main(int argc, char* argv[]){
     cal.Z5 = TMath::Sqrt(parameters::Z_de[1][1]*cal.F5ICde)+parameters::Z_de[1][0];
     cal.Z7 = TMath::Sqrt(parameters::Z_de[2][1]*cal.F7ICde)+parameters::Z_de[2][0];
     cal.Z11 = TMath::Sqrt(parameters::Z_de[3][1]*cal.MUSIC1de)+parameters::Z_de[3][0];
+    cal.Z11at = TMath::Sqrt(parameters::Z_de[4][1]*cal.MUSIC2de)+parameters::Z_de[4][0];
     
     tree->Fill();
      

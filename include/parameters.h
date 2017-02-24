@@ -11,10 +11,30 @@ double c = 299.792488; // mm/ns
 double mass_unit = 931.49432; // MeV/c^2
 
 double TOFDistance[12]={-31.633,-20.841,-8.8,0.,11.792,23.283,34.775,46.567,57.867,70.409,81.809,94.35};  
-double distance_PL3_focus = -205.0; // distance focus to plastic F3
-double distance_PL5_focus = 400.0; // distance focus to plastic F5
-double distance_PL7_focus = 300.0; // distance focus to plastic F7
-double distance_PL11_focus = -432.0; // distance focus to plastic F11
+double distance_PL3_focus = -205.0; // distance nominal focus to plastic F3
+double distance_PL5_focus = 400.0; // distance nominal focus to plastic F5
+double distance_PL7_focus = 300.0; // distance nominal focus to plastic F7
+double distance_PL11_focus = -432.0; // distance nominal focus to plastic F11
+
+//===== PID ===================================
+//===== Z ====
+double Z_de[5][2]={
+  // offset  //gain
+  {0.0,0.76108}, //F3
+  {0.3,0.70283}, //F5
+  {2.74,0.34986}, //F7
+  {0.0,1}, //MUSIC1
+  {0.0,1}, //MUSIC2
+};
+//===== Tracking ========================
+// the distance of the focus position from the ideal focus point along the z-axis at each Fpl.
+double Zoffset[12]={ 
+  0.,0.,0.,50.,0.,-60.,0.,-190.,0.0,0.,0.,720.0,
+};
+double default_focal_position[12]={
+ //                     F3            F5              F7                           F11
+  -999.0,-999.0,-999.0, 0.0, -999.0, -999.0,-999.0, 15.0, -999.0, -999.0, -999.0,  0.0};
+
 
 double PLQch2mm0[12]={0.,0.,0.,0.,0.,-30.581,    0.,0.,0.,0.,0.,0.};
 double PLQch2mm1[12]={0.,0.,0.,0.,0.,76.221,    0.,0.,0.,0.,0.,0.};
@@ -51,8 +71,11 @@ double PL_mt_mm[12][2] = { //time to mm V1290
   {-41.4176,-37.94} //F11 plastics PMT 1,2
 };
 
+// MUSIC normalisation
 double F3IC_anodes_norms[6] = {6*0.188,6*0.15548, 6*0.1463, 6*0.1271, 6*0.1467255, 6*0.21594};
 double F5IC_anodes_norms[5] = {1.08744525,  1.00276691,  1.09262736,  0.78055499,  0.91230866};
+//double F7IC_anodes_norms[6] = {1.01673485,  0.96816872,  0.95792419,  0.97955237,  0.95929967,1.01040024};
+//double F7IC_anodes_norms[6] = {1.0, 1.0,   1.0, 1.0, 1.0, 1.0};
 
 
 //===== Calibration ======================================
@@ -385,36 +408,7 @@ double ch2ns_GSIIC[2][2][8]={// GSI IC
 };
 //======================================
 
-//===== Ge =============================
-//===== T ==========
-double  ch2ns_Ge[2][2][4]={//[2]:Slope,Pedestal [2]:1,2 [4]:Crystal
-  /* Slope */
-  1.,1.,1.,1., /*1-1,2,3,4*/
-  1.,1.,1.,1., /*2-1,2,3,4*/
-  /* Pedestal */
-  0.,0.,0.,0., /*1-1,2,3,4*/
-  0.,0.,0.,0., /*2-1,2,3,4*/
-};
-
-//===== Q ==========
-double  ch2MeV_Ge[2][2][4]={//[2]:Slope,Pedestal [2]:1,2 [4]:Crystal
-  /* Slope */
-  1.,1.,1.,1., /*1-1,2,3,4*/
-  1.,1.,1.,1., /*2-1,2,3,4*/
-  /* Pedestal */
-  0.,0.,0.,0., /*1-1,2,3,4*/
-  0.,0.,0.,0., /*2-1,2,3,4*/
-};
-//======================================
-//========================================================
-
-
 //===== Reconstruction ===================================
-//===== Tracking ========================
-// the distance of the focus position from the ideal focus point along the z-axis at each Fpl.
-double Zoffset[12]={ 
-  0.,0.,0.,50.,0.,-60.,0.,-190.,0.0,0.,0.,720.0,
-};
 
 // the distance of the PPAC position from the upstream along z-axis at each Fpl.
 double Zpos[2][12][4]={//[2]:X/Y [12]:Fpl [4] 1A/1B/2A/2B 
@@ -462,71 +456,8 @@ double Length[3]={
 };
 // focus point is shited 720mm to downstream in F11.(day2)
 
-// speed of light [m/ns]
-double Clight = 2.99792458E-01;
-// mass of nucleon [MeV]
-//double Mnucleon = 931.49432;
-double Mnucleon = 9.3149432E-01;
 //===== Transfer Matrix =======================
 // refer from each file in http://www/ribf.riken.jp/BigRIPSInfo/optics/optics.html 
-// F3-F5 : matrix_1st_7Tm.txt
-// F5-F7 : matrix_1st_7Tm.txt
-// F9-F11 : matrixz_1st_LargeAccAchr_7Tm.txt
-//
-// Tmat[0][][] : F3-F5
-// Tmat[1][][] : F5-F7
-// Tmat[2][][] : F9-F11
-double TMat[3][5][5]={
-  // F3-F5
-   0.917467E+00, -0.520039E-02,  0.,            0.,            0.316051E+02,
-  -0.187210E-01,  0.109006E+01,  0.,            0.,           -0.129966E-01,
-   0.,            0.,            0.107852E+01,  0.325887E-01,  0.,
-   0.,            0.,            0.331125E+00,  0.937205E+00,  0.,
-  -0.316630E-01,  0.188156E+01,  0.,            0.,            0.896693E+02,
-   // F5-F7
-   0.109101E+01,  0.204150E-01,  0.,            0.,           -0.344457E+02,
-  -0.172247E-01,  0.916262E+00,  0.,            0.,            0.590371E+00,
-   0.,            0.,            0.939059E+00,  0.255208E-01,  0.,
-   0.,            0.,            0.336060E+00,  0.107403E+01,  0.,
-  -0.277197E-02, -0.172349E+01,  0.,            0.,            0.898155E+02,
-   // F9-F11
-   0.492516E+00,  0.940953E-01,  0.,            0.,            0.122280E+02,
-  -0.248973E+00,  0.198282E+01,  0.,            0.,           -0.592115E+00,
-   0.,            0.,            0.525997E+00, -0.179933E-01,  0.,
-   0.,            0.,            0.521447E-01,  0.188332E+01,  0.,
-  -0.721884E-02,  0.139695E+01,  0.,            0.,            0.802942E+02,
-};
-//===== Z =====================================
-//double ionpair[3]={4866.,4866.,4866.,};
-double ionpair[3]={3586.,4866.,4866.,};
-double Z_calib[2][3][3]={
-  //slope
-  3.4679,3.4679,3.4679, /* F3IC*/	  
-  3.2973,3.2973,3.2973, /* F7IC*/ 
-  4.649,4.649,4.649, /* F11IC*/
-  //intercept
-  -0.89445,-0.89445,-0.89445, /* F3IC */	  
-  1.6940,1.6940,1.6940, /* F7IC */ 
-  -3.2345,-3.2345,-3.2345, /* F11IC */
-  //  //slope
-  //  3.5502,3.5502,3.5502, /* Beta:T*/	  
-  //  11.76,11.76,11.76, /* Beta:CFD*/ 
-  //  10.482,10.482,10.482, /* Beta:Slew*/
-  //  //intercept
-  //  //  -0.137,-0.137,-0.137, /* Beta:T*/	  
-  //  0.55668,0.55668,0.55668, /* Beta:T*/	  
-  //  -0.137,-0.137,-0.137, /* Beta:CFD*/ 
-  //  -0.569,-0.569,-0.569, /* Beta:Slew*/
-};
-
-double Z_de[5][2]={
-  // offset  //gain
-  {0.0,0.76108}, //F3
-  {0.3,0.70283}, //F5
-  {0.0,1}, //F7
-  {0.0,1}, //MUSIC1
-  {0.0,1}, //MUSIC2
-};
 
 
 double Mat35[6][6] = {
@@ -541,13 +472,12 @@ double Mat35[6][6] = {
 };
 
 double Mat57[6][6] = {
-  0.109101E+01,   0.204150E-01,   0.,             0.,            0.,  -0.344457E+02,
-  //0.172247E-01,   0.916262E+00,   0.,             0.,            0.,   0.590371E+00,
-  0.172247E-01,   0.711,          0.,             0.,            0.,   0.590371E+00,
+  0.109101E+01,   0.02,           0.,             0.,            0.,  -0.344457E+02,
+  0.0,            0.711,          0.,             0.,            0.,   0.590371E+00,
   0.,             0.,             0.939059E+00,   0.255208E-01,  0.,   0.,
   0.,             0.,             0.336060E+00,   0.107403E+01,  0.,   0.,
   //0.277197E-02,  -0.172349E+01,   0.,             0.,            1.,   0.898155E+02,
-  0.0,            2.54,           0.,             0.,            1.,   0.0,
+  0.0,            2.5,           0.,             0.,            1.,   0.0,
   0.,             0.,             0.,             0.,            0.,   1.
 };
 
