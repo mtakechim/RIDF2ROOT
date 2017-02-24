@@ -148,6 +148,22 @@ int main(int argc, char* argv[]){
   id_37b.set_dipoles(raw.Dipole);
   
   
+  PID id_79(F7,F9);
+  id_79.set_matrix(parameters::Mat79);
+  id_79.set_tof(&cal.TOF711m);
+  id_79.set_tof_distance(parameters::TOFDistance[F11] - parameters::TOFDistance[F7]);
+  id_79.set_positions(&cal.F7X,&cal.F7Y,&cal.F9X,&cal.F9Y);
+  id_79.set_angles(&cal.F7A,&cal.F7B,&cal.F9A,&cal.F9B);
+  id_79.set_dipoles(raw.Dipole);
+  
+  PID id_911(F9,F11);
+  id_911.set_matrix(parameters::Mat911);
+  id_911.set_tof(&cal.TOF711m);
+  id_911.set_tof_distance(parameters::TOFDistance[F11] - parameters::TOFDistance[F7]);
+  id_911.set_positions(&cal.F9X,&cal.F9Y,&cal.F11X,&cal.F11Y);
+  id_911.set_angles(&cal.F9A,&cal.F9B,&cal.F11A,&cal.F11B);
+  id_911.set_dipoles(raw.Dipole);
+  
   PID id_711(F7,F11);
   id_711.set_matrix(parameters::Mat911);
   id_711.set_tof(&cal.TOF711m);
@@ -167,7 +183,8 @@ int main(int argc, char* argv[]){
   tree->Branch("PL11long_MHit",raw.PL11long_MHit,"PL11long_MHit[2]/I");
   
   #ifdef IC_RAW
-  tree->Branch("GSIICERaw",raw.GSIICERaw,"GSIICERaw[2][8]/I");
+  tree->Branch("MUSIC1Raw",raw.GSIICERaw[0],"MUSIC1Raw[8]/I");
+  tree->Branch("MUSIC2Raw",raw.GSIICERaw[1],"MUSIC2Raw[8]/I");
   tree->Branch("IC3Raw",raw.IC3Raw,"IC3Raw[6]/I");
   tree->Branch("IC5Raw",raw.IC5Raw,"IC5Raw[5]/I");
   tree->Branch("IC7Raw",raw.IC7Raw,"IC7Raw[6]/I");
@@ -219,6 +236,18 @@ int main(int argc, char* argv[]){
   
   tree->Branch("AoQ37a",&id_37a.aoq,"AoQ37a/D");
   tree->Branch("AoQ37b",&id_37b.aoq,"AoQ37b/D");
+  
+  
+  tree->Branch("Brho79",&id_79.brho,"Brho79/D");
+  tree->Branch("Brho911",&id_911.brho,"Brho911/D");
+  
+  tree->Branch("AoQ79",&id_79.aoq,"AoQ79/D");
+  tree->Branch("AoQ911",&id_911.aoq,"AoQ911/D");
+  
+  tree->Branch("Beta79",&id_79.beta,"Beta79/D");
+  tree->Branch("Beta911",&id_911.beta,"Beta911/D");
+  
+  
   #endif
   
   // Additional tracking
@@ -254,6 +283,10 @@ int main(int argc, char* argv[]){
         raw.IC7Raw[i] *=parameters::F7IC_anodes_norms[i];
     }
     */ 
+    
+    for(int i=0;i<8;i++){
+        raw.GSIICERaw[0][i] *=parameters::MUSIC1_anodes_norms[i];
+    }
   #endif
 
     f3ic.calculate();    
@@ -320,6 +353,8 @@ int main(int argc, char* argv[]){
     cal.TOF711b = tof(pl7,pl11b,V1290);
     cal.TOF711m = average(cal.TOF711a,cal.TOF711b,100,1000);
     
+    // temporary, check PPAc calibration
+    cal.F9A += 55.3;
     
     id_35.calculate();
     cal.Beta35 = id_35.beta;
@@ -340,6 +375,12 @@ int main(int argc, char* argv[]){
     //cal.AoQ37 = average(id_37a.aoq,id_37b.aoq,1.5,3);
     cal.AoQ37 = average(cal.AoQ35,cal.AoQ57,1.5,3);
     
+    id_79.calculate();
+    id_911.calculate();
+    cal.Delta79 = id_79.delta;
+    cal.Delta911 = id_911.delta;
+    cal.Beta711 = average(id_79.beta,id_911.beta,0.3,1);
+    cal.AoQ711 = average(id_79.aoq,id_911.aoq,1.5,3);
     
     id_711.calculate();
     cal.Beta711 = id_711.beta;
