@@ -45,6 +45,10 @@ void PPAC::clear(){
         posy[i]=-200.;
         bx[i]=0;
         by[i]=0;
+        tsumx[i]=0;
+        tsumy[i]=0;
+        tdiffx[i]=0;
+        tdiffy[i]=0;
     }
 }
 
@@ -63,10 +67,10 @@ void PPAC::calculate(){
     for(int i=0;i<4;i++){ //loop over positions
         tdiffx[i]=tcal[i][2]-tcal[i][0]-parameters::Outoffset[index][i][0];
         tdiffy[i]=tcal[i][1]-tcal[i][3]-parameters::Outoffset[index][i][1];
-	
+
         tsumx[i]=tcal[i][2]+tcal[i][0];
         tsumy[i]=tcal[i][1]+tcal[i][3];
-	
+
         posx[i]= 0.5*parameters::ns2mm[index][i][0]*tdiffx[i]-parameters::Inoffset[index][i][0]-parameters::Geomoffset[index][i][0];
         posy[i]= 0.5*parameters::ns2mm[index][i][1]*tdiffy[i]-parameters::Inoffset[index][i][0]-parameters::Geomoffset[index][i][1];
     
