@@ -28,6 +28,8 @@ struct caldata{
     Double_t MUSIC1de;
     Double_t MUSIC2de;
     
+    Double_t MUSIC1_pos;
+    Double_t MUSIC2_pos;
     //PPACs
     Double_t F3X;
     Double_t F5X;
@@ -64,6 +66,8 @@ struct caldata{
     Double_t F7PLQ_X;
     Double_t F11PLQ_X;
     Double_t F11longPLQ_X;
+    
+    Double_t F11_reftime;
     
     //F3-F5
     Double_t AoQ35;
@@ -144,6 +148,9 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("MUSIC1Sum",&MUSIC1Sum,"MUSIC1Sum/D");
     tree->Branch("MUSIC2Sum",&MUSIC2Sum,"MUSIC2Sum/D");
     
+    tree->Branch("MUSIC1_pos",&MUSIC1_pos,"MUSIC1_pos/D");
+    tree->Branch("MUSIC2_pos",&MUSIC2_pos,"MUSIC2_pos/D");
+    
     tree->Branch("F3ICMean",&F3ICMean,"F3ICMean/D");
     tree->Branch("F5ICMean",&F5ICMean,"F5ICMean/D");    
     tree->Branch("F7ICMean",&F7ICMean,"F7ICMean/D");
@@ -176,6 +183,8 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("F7PLQ_X",&F7PLQ_X,"F7PLQ_X/D");
     tree->Branch("F11PLQ_X",&F11PLQ_X,"F11PLQ_X/D");
     tree->Branch("F11longPLQ_X",&F11longPLQ_X,"F11longPLQ_X/D");
+    
+    tree->Branch("F11_reftime",&F11_reftime,"F11_reftime/D");
 
     tree->Branch("AoQ35",&AoQ35,"AoQ35/D");
     tree->Branch("Delta35",&Delta35,"Delta35/D");
@@ -252,6 +261,9 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("MUSIC1GMean",&MUSIC1GMean);
     tree->SetBranchAddress("MUSIC2GMean",&MUSIC2GMean);
     
+    tree->SetBranchAddress("MUSIC1_pos",&MUSIC1_pos);
+    tree->SetBranchAddress("MUSIC2_pos",&MUSIC2_pos);
+    
     tree->SetBranchAddress("F3ICde",&F3ICde);
     tree->SetBranchAddress("F5ICde",&F5ICde);    
     tree->SetBranchAddress("F7ICde",&F7ICde);
@@ -266,6 +278,7 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("TOF711m",&TOF711m);
     tree->SetBranchAddress("TOF711a",&TOF711a);
     tree->SetBranchAddress("TOF711b",&TOF711b);
+    tree->SetBranchAddress("F11_reftime",&F11_reftime);
     
     tree->SetBranchAddress("F3PLQ_X",&F3PLQ_X);
     tree->SetBranchAddress("F5PLQ_X",&F5PLQ_X);

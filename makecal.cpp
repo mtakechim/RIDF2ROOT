@@ -70,8 +70,13 @@ int main(int argc, char* argv[]){
   IC f3ic(6,raw.IC3Raw); //6 anodes, pointer to the data array
   IC f5ic(5,raw.IC5Raw);
   IC f7ic(6,raw.IC7Raw);
-  IC music1(8,raw.GSIICERaw[0],raw.GSI1290Raw[0]);
-  IC music2(8,raw.GSIICERaw[1],raw.GSI1290Raw[8]);
+  
+  IC music1(8,raw.GSIICERaw[0],&(raw.GSI1290Raw[0][0]),&cal.F11_reftime);
+  IC music2(8,raw.GSIICERaw[1],&(raw.GSI1290Raw[8][0]),&cal.F11_reftime);
+  music1.set_nhits(&raw.GSIMHit[0]);
+  music2.set_nhits(&raw.GSIMHit[8]);
+  music1.set_time_calibration(-0.04,0);
+  music2.set_time_calibration(-0.04,0);
   
   // set ADC thresholds
   f3ic.threshold(100);
@@ -100,6 +105,7 @@ int main(int argc, char* argv[]){
   pl5.set_tdc_threshold(1);
   pl7.set_tdc_threshold(1);
   pl11.set_tdc_threshold(1);
+  pl11b.set_tdc_threshold(1);
   pl11long.set_tdc_threshold(1);
   
   // PPACs
@@ -309,17 +315,20 @@ int main(int argc, char* argv[]){
     }
   #endif
 
-    f3ic.calculate();    
-    f5ic.calculate();
-    f7ic.calculate();
-    music1.calculate();
-    music2.calculate();
+    
     pl3.calculate();
     pl5.calculate();
     pl7.calculate();
     pl11.calculate();
     pl11b.calculate();
     pl11long.calculate();
+    
+    f3ic.calculate();    
+    f5ic.calculate();
+    f7ic.calculate();
+    music1.calculate();
+    music2.calculate();
+    
     ppac3.calculate();
     ppac5.calculate();
     ppac7.calculate();
@@ -366,6 +375,9 @@ int main(int argc, char* argv[]){
     ppac_f11tx(ppac11.x,ppac11.a,parameters::distance_F11target_focus);
     ppac_f11ty(ppac11.y,ppac11.b,parameters::distance_F11target_focus);
     
+    cal.MUSIC1_pos = music1.meanpos;
+    cal.MUSIC2_pos = music2.meanpos;
+    
     cal.TOF35 = tof(pl3,pl5,LE);
     cal.TOF57 = tof(pl5,pl7,LE);
     cal.TOF37 = cal.TOF35 + cal.TOF57;
@@ -374,6 +386,8 @@ int main(int argc, char* argv[]){
     cal.TOF711a = tof(pl7,pl11,V1290);
     cal.TOF711b = tof(pl7,pl11b,V1290);
     cal.TOF711m = average(cal.TOF711a,cal.TOF711b,100,1000);
+    
+    cal.F11_reftime = 0.025*average(average(raw.GSI1290Raw[16][0],raw.GSI1290Raw[17][0],1400000,9999000),average(raw.GSI1290Raw[18][0],raw.GSI1290Raw[19][0],1400000,9999000),1400000,9999000);
     
     id_35.calculate();
     cal.Beta35 = id_35.beta;
