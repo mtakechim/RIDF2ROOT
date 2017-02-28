@@ -144,6 +144,7 @@ void Plastics::calculate(){
     // mean time from V1290
     if(mt_left != nullptr && mt_right != nullptr && *mt_left_nhit>0 && *mt_right_nhit>0){
 	mt = mt_left[0]+mt_right[0]- *mt_time_ref - *mt_time_ref;
+	//mt = mt_left[0]+mt_right[0];
 	mt = 0.025*mt/2.;
 	mt_dif = 0.025*(mt_left[0]- mt_right[0]);
 	x_mtdif = PL_mt_mm[index][0] + mt_dif*PL_mt_mm[index][1];

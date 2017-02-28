@@ -37,6 +37,7 @@ class PID{
     PID_t idt;
     focal_planes_t fp_type;
     double *tmatrix=nullptr;
+    double tof_distance = 0;
     
     PID(FP fp1, FP fp2);
     void set_plastics(Plastics *p1, Plastics *p2){pl_i = p1; pl_f = p2;};
@@ -48,6 +49,7 @@ class PID{
     void set_dipoles(double *d){dipole = d;};
     void set_pid_type(PID_t t){idt=t;};
     void set_focalplane_type(focal_planes_t t){fp_type=t;};
+    void set_tof_distance(double d){tof_distance = d;};
     double matrix(int i, int j){return tmatrix[(6*i) + j];};
     
     void clear();
@@ -56,6 +58,7 @@ class PID{
 };
 
 PID::PID(FP fp1, FP fp2):initial_fp(fp1),final_fp(fp2){
+    tof_distance = parameters::TOFDistance[final_fp] - parameters::TOFDistance[initial_fp];  // calculate distance between plastics
     if(fp1==F3 && fp2==F5){
         idt = F35;
         fp_type = focal_planes_t::achromatic_dispersive;
@@ -104,7 +107,6 @@ void PID::calculate(){
         }
         
     double dispersion = matrix(0,5); // take dispersion from the matrix
-    double distance = TOFDistance[final_fp] - TOFDistance[initial_fp];  // calculate distance between plastics
     double dx = 0.0;  // position difference for delta calculation
     double tof_dl = 0.0;  // tof length correction
     double angle = 0.0; //angle used for correction
@@ -168,7 +170,7 @@ void PID::calculate(){
     // correct TOF path
     tof_dl = (matrix(4,0)*(*xi) + matrix(4,1)*angle);  
     if(delta>-10) tof_dl += matrix(4,5)*delta; 
-    beta = ( tof_dl+1000.*distance)/c/(*tof);
+    beta = ( tof_dl+1000.*tof_distance)/c/(*tof);
     gamma = 1/TMath::Sqrt(1 - (beta*beta));
     
     if(delta>-10 && beta>0 && beta<1){
