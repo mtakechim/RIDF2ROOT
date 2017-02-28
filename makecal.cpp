@@ -242,6 +242,12 @@ int main(int argc, char* argv[]){
   tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
   tree->Branch("PL11_mtdif",&pl11.mt_dif,"PL11_mtdif/D");
   tree->Branch("PL11B_mtdif",&pl11b.mt_dif,"PL11B_mtdif/D");
+  
+  tree->Branch("PL3_qdif",&pl3.qdif,"PL3_qdif/D");
+  tree->Branch("PL5_qdif",&pl5.qdif,"PL5_qdif/D");
+  tree->Branch("PL7_qdif",&pl7.qdif,"PL7_qdif/D");
+  tree->Branch("PL11_qdif",&pl11.qdif,"PL11_qdif/D");
+  tree->Branch("PL11B_qdif",&pl11b.qdif,"PL11B_qdif/D");
   #endif
   
   #ifdef ID_DETAILS

@@ -6,11 +6,18 @@ class Track{
     public:
     double val=0;
     Track(){};
-    double operator ()(double &x, double &a, double &distance){val = x + (a*distance/1000.);return val;}
+    double operator ()(double &x, double &a, double &distance);
     private:
     double *_x;
     double *_a;
 };
+
+double Track::operator ()(double &x, double &a, double &distance)
+{
+    if(x<-199 || a<-100){val = -999;}
+    val = x + (a*distance/1000.);
+    return val;
+    }
 
 double average(double x1, double x2, double min, double max){
     double r=0.0;
