@@ -5,10 +5,11 @@
 
 // config
 #define PLASTICS_DETAILS 1
-//#define PPAC_DETAILS 1  // output ppac sums and partial positions
+#define PPAC_DETAILS 1  // output ppac sums and partial positions
 #define IC_RAW 1  // output IC Raw data
 #define IC_ANODES_NORMALIZATION
 #define PPAC_TRACKS 1
+#define ID_DETAILS 1
 
 #include "makecal.h"
 #include "ribf123_rawvar.h"
@@ -200,13 +201,21 @@ int main(int argc, char* argv[]){
   tree->Branch("PPAC3_posx",ppac3.posx,"PPAC3_posx[4]/D");
   tree->Branch("PPAC5_posx",ppac5.posx,"PPAC5_posx[4]/D");
   tree->Branch("PPAC7_posx",ppac7.posx,"PPAC7_posx[4]/D");
+  tree->Branch("PPAC9_posx",ppac9.posx,"PPAC9_posx[4]/D");
   tree->Branch("PPAC11_posx",ppac11.posx,"PPAC11_posx[4]/D");
+  
   tree->Branch("PPAC3_tsumx",ppac3.tsumx,"PPAC3_tsumx[4]/D");
   tree->Branch("PPAC3_tsumy",ppac3.tsumy,"PPAC3_tsumy[4]/D");  
+  
   tree->Branch("PPAC5_tsumx",ppac5.tsumx,"PPAC5_tsumx[4]/D");
   tree->Branch("PPAC5_tsumy",ppac5.tsumy,"PPAC5_tsumy[4]/D");
+  
   tree->Branch("PPAC7_tsumx",ppac7.tsumx,"PPAC7_tsumx[4]/D");
   tree->Branch("PPAC7_tsumy",ppac7.tsumy,"PPAC7_tsumy[4]/D");  
+  
+  tree->Branch("PPAC9_tsumx",ppac9.tsumx,"PPAC9_tsumx[4]/D");
+  tree->Branch("PPAC9_tsumy",ppac9.tsumy,"PPAC9_tsumy[4]/D");  
+  
   tree->Branch("PPAC11_tsumx",ppac11.tsumx,"PPAC11_tsumx[4]/D");
   tree->Branch("PPAC11_tsumy",ppac11.tsumy,"PPAC11_tsumy[4]/D");
   #endif
@@ -227,7 +236,9 @@ int main(int argc, char* argv[]){
   tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
   tree->Branch("PL11_mtdif",&pl11.mt_dif,"PL11_mtdif/D");
   tree->Branch("PL11B_mtdif",&pl11b.mt_dif,"PL11B_mtdif/D");
+  #endif
   
+  #ifdef ID_DETAILS
   tree->Branch("Beta37a",&id_37a.beta,"Beta37a/D");
   tree->Branch("Beta37b",&id_37b.beta,"Beta37b/D");
   
@@ -247,6 +258,8 @@ int main(int argc, char* argv[]){
   tree->Branch("Beta79",&id_79.beta,"Beta79/D");
   tree->Branch("Beta911",&id_911.beta,"Beta911/D");
   
+  tree->Branch("Gamma79",&id_79.gamma,"Gamma79/D");
+  tree->Branch("Gamma911",&id_911.gamma,"Gamma911/D");
   
   #endif
   
@@ -260,7 +273,14 @@ int main(int argc, char* argv[]){
   tree->Branch("PPAC_PL7X",&ppac_pl7x.val,"PPAC_PL7X/D");
   Track ppac_pl11x;
   tree->Branch("PPAC_PL11X",&ppac_pl11x.val,"PPAC_PL11X/D");
+  
+  Track ppac_f11tx;
+  Track ppac_f11ty;
+  tree->Branch("PPAC_F11tx",&ppac_f11tx.val,"PPAC_F11tx/D");
+  tree->Branch("PPAC_F11ty",&ppac_f11ty.val,"PPAC_F11ty/D");
+  
   #endif
+  
 
   //Event Loop
   Long64_t iEntry = 0;
@@ -343,6 +363,8 @@ int main(int argc, char* argv[]){
     ppac_pl7x(ppac7.x,ppac7.a,parameters::distance_PL7_focus);
     ppac_pl11x(ppac11.x,ppac11.a,parameters::distance_PL11_focus);
     #endif
+    ppac_f11tx(ppac11.x,ppac11.a,parameters::distance_F11target_focus);
+    ppac_f11ty(ppac11.y,ppac11.b,parameters::distance_F11target_focus);
     
     cal.TOF35 = tof(pl3,pl5,LE);
     cal.TOF57 = tof(pl5,pl7,LE);
@@ -352,9 +374,6 @@ int main(int argc, char* argv[]){
     cal.TOF711a = tof(pl7,pl11,V1290);
     cal.TOF711b = tof(pl7,pl11b,V1290);
     cal.TOF711m = average(cal.TOF711a,cal.TOF711b,100,1000);
-    
-    // temporary, check PPAc calibration
-    cal.F9A += 55.3;
     
     id_35.calculate();
     cal.Beta35 = id_35.beta;
@@ -380,7 +399,8 @@ int main(int argc, char* argv[]){
     cal.Delta79 = id_79.delta;
     cal.Delta911 = id_911.delta;
     cal.Beta711 = average(id_79.beta,id_911.beta,0.3,1);
-    cal.AoQ711 = average(id_79.aoq,id_911.aoq,1.5,3);
+    //cal.AoQ711 = average(id_79.aoq,id_911.aoq,1.5,3);
+    cal.AoQ711 = id_911.aoq+0.02;
     
     id_711.calculate();
     cal.Beta711 = id_711.beta;
