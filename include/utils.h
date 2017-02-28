@@ -12,7 +12,7 @@ class Track{
     double *_a;
 };
 
-double average(double &x1, double &x2, double min, double max){
+double average(double x1, double x2, double min, double max){
     double r=0.0;
     
     int n=0;
