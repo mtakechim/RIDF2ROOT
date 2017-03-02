@@ -39,4 +39,27 @@ double average(double x1, double x2, double min, double max){
     return r;
 }
 
+double choose(double min, double max,double v1, double v2=-9999999, double v3=-99999999,double v4=-99999999){
+    double r=0;
+    if(v1>min && v1<max){
+        r = v1;
+    }
+    else if(v2>min && v2<max){
+        r = v2;
+    }
+    else if(v3>min && v3<max){
+        r = v3;
+    }
+    else if(v4>min && v4<max){
+        r = v4;
+    }
+    else{
+        r = -9999999;
+    }
+    
+    return r;
+}
+
+
+
 #endif

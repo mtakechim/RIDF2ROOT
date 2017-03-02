@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
   PID id_35(F3,F5);
   id_35.set_matrix(parameters::Mat35);
   id_35.set_tof(&cal.TOF35);
-  id_35.set_positions(&cal.F3X,&cal.F3Y,&cal.F5X,&cal.F5Y);
+  id_35.set_positions(&cal.X3,&cal.F3Y,&cal.X5,&cal.F5Y);
   id_35.set_angles(&cal.F3A,&cal.F3B,&cal.F5A,&cal.F5B);
   id_35.set_dipoles(raw.Dipole);
   
@@ -204,26 +204,12 @@ int main(int argc, char* argv[]){
   
   
   #ifdef PPAC_DETAILS
-  tree->Branch("PPAC3_posx",ppac3.posx,"PPAC3_posx[4]/D");
-  tree->Branch("PPAC5_posx",ppac5.posx,"PPAC5_posx[4]/D");
-  tree->Branch("PPAC7_posx",ppac7.posx,"PPAC7_posx[4]/D");
-  tree->Branch("PPAC9_posx",ppac9.posx,"PPAC9_posx[4]/D");
-  tree->Branch("PPAC11_posx",ppac11.posx,"PPAC11_posx[4]/D");
+  ppac3.set_branches(tree,"PPAC3");
+  ppac5.set_branches(tree,"PPAC5");
+  ppac7.set_branches(tree,"PPAC7");
+  ppac9.set_branches(tree,"PPAC9");
+  ppac11.set_branches(tree,"PPAC11");
   
-  tree->Branch("PPAC3_tsumx",ppac3.tsumx,"PPAC3_tsumx[4]/D");
-  tree->Branch("PPAC3_tsumy",ppac3.tsumy,"PPAC3_tsumy[4]/D");  
-  
-  tree->Branch("PPAC5_tsumx",ppac5.tsumx,"PPAC5_tsumx[4]/D");
-  tree->Branch("PPAC5_tsumy",ppac5.tsumy,"PPAC5_tsumy[4]/D");
-  
-  tree->Branch("PPAC7_tsumx",ppac7.tsumx,"PPAC7_tsumx[4]/D");
-  tree->Branch("PPAC7_tsumy",ppac7.tsumy,"PPAC7_tsumy[4]/D");  
-  
-  tree->Branch("PPAC9_tsumx",ppac9.tsumx,"PPAC9_tsumx[4]/D");
-  tree->Branch("PPAC9_tsumy",ppac9.tsumy,"PPAC9_tsumy[4]/D");  
-  
-  tree->Branch("PPAC11_tsumx",ppac11.tsumx,"PPAC11_tsumx[4]/D");
-  tree->Branch("PPAC11_tsumy",ppac11.tsumy,"PPAC11_tsumy[4]/D");
   #endif
   
   #ifdef PLASTICS_DETAILS  
@@ -248,6 +234,14 @@ int main(int argc, char* argv[]){
   tree->Branch("PL7_qdif",&pl7.qdif,"PL7_qdif/D");
   tree->Branch("PL11_qdif",&pl11.qdif,"PL11_qdif/D");
   tree->Branch("PL11B_qdif",&pl11b.qdif,"PL11B_qdif/D");
+  
+  tree->Branch("PL3_qtot",&pl3.qtot,"PL3_qtot/D");
+  tree->Branch("PL5_qtot",&pl5.qtot,"PL5_qtot/D");
+  tree->Branch("PL7_qtot",&pl7.qtot,"PL7_qtot/D");
+  tree->Branch("PL11_qtot",&pl11.qtot,"PL11_qtot/D");
+  tree->Branch("PL11B_qtot",&pl11b.qtot,"PL11B_qtot/D");
+  
+  
   #endif
   
   #ifdef ID_DETAILS
@@ -345,6 +339,7 @@ int main(int argc, char* argv[]){
     cal.F5PLQ_X = pl5.xq;
     cal.F7PLQ_X = pl7.xq;
     cal.F11PLQ_X = pl11.xq;
+    cal.F11BPLQ_X = pl11b.xq;
     cal.F11longPLQ_X = pl11long.xq;
     
     cal.F3X = ppac3.x;
@@ -394,6 +389,21 @@ int main(int argc, char* argv[]){
     cal.TOF711m = average(cal.TOF711a,cal.TOF711b,100,1000);
     
     cal.F11_reftime = 0.025*average(average(raw.GSI1290Raw[16][0],raw.GSI1290Raw[17][0],1400000,9999000),average(raw.GSI1290Raw[18][0],raw.GSI1290Raw[19][0],1400000,9999000),1400000,9999000);
+    
+    
+    //cal.X3 = average(ppac3.x1,pl3.xq,-100,100);
+    //cal.X3 = choose(-100,100,cal.F3X,pl3.xq);
+    cal.X3 = pl3.xq;
+    //cal.X3 = cal.F3X;
+        
+    //cal.X5 = average(cal.F5X,pl5.xq,-100,100);
+    //cal.X5 = choose(-100,100,cal.F5X,pl5.xq);
+    cal.X5 = pl5.xq;
+    //cal.X5 =cal. F5X;
+    
+    cal.X7 = choose(-100,100,cal.F7X,pl7.xq);
+    cal.X11 = choose(-100,100,cal.F11X,pl11.x_mtdif);
+    
     
     id_35.calculate();
     cal.Beta35 = id_35.beta;
