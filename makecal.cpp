@@ -115,13 +115,6 @@ int main(int argc, char* argv[]){
   PPAC ppac9(9,raw.PPAC9_QRaw,raw.PPAC9_TRaw,raw.PPAC9_AQRaw,raw.PPAC9_ATRaw);
   PPAC ppac11(11,raw.PPAC11_QRaw,raw.PPAC11_TRaw,raw.PPAC11_AQRaw,raw.PPAC11_ATRaw);
   
-  ppac3.overflow = 570;
-  ppac5.overflow = 570;
-  ppac7.overflow = 570;
-  ppac9.overflow = 570;
-  ppac11.overflow = 570;
-  
-  
   // IDs
   PID id_35(F3,F5);
   id_35.set_matrix(parameters::Mat35);
@@ -392,13 +385,13 @@ int main(int argc, char* argv[]){
     
     
     //cal.X3 = average(ppac3.x1,pl3.xq,-100,100);
-    //cal.X3 = choose(-100,100,cal.F3X,pl3.xq);
-    cal.X3 = pl3.xq;
+    cal.X3 = choose(-100,100,cal.F3X,pl3.xq);
+    //cal.X3 = pl3.xq;
     //cal.X3 = cal.F3X;
         
     //cal.X5 = average(cal.F5X,pl5.xq,-100,100);
-    //cal.X5 = choose(-100,100,cal.F5X,pl5.xq);
-    cal.X5 = pl5.xq;
+    cal.X5 = choose(-100,100,cal.F5X,pl5.xq);
+    //cal.X5 = pl5.xq;
     //cal.X5 =cal. F5X;
     
     cal.X7 = choose(-100,100,cal.F7X,pl7.xq);
