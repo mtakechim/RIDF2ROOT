@@ -206,35 +206,11 @@ int main(int argc, char* argv[]){
   #endif
   
   #ifdef PLASTICS_DETAILS  
-  tree->Branch("PL3_x_tdif",&pl3.x_tdif,"PL3_x_tdif/D");
-  tree->Branch("PL5_x_tdif",&pl5.x_tdif,"PL5_x_tdif/D");
-  tree->Branch("PL7_x_tdif",&pl7.x_tdif,"PL7_x_tdif/D");
-  tree->Branch("PL11_xa_mtdif",&pl11.x_mtdif,"PL11_xa_mtdif/D");
-  tree->Branch("PL11_xb_mtdif",&pl11b.x_mtdif,"PL11_xb_mtdif/D");
-  
-  tree->Branch("PL3_tdif",&pl3.t_dif,"PL3_tdif/D");
-  tree->Branch("PL5_tdif",&pl5.t_dif,"PL5_tdif/D");
-  tree->Branch("PL7_tdif",&pl7.t_dif,"PL7_tdif/D");
-  tree->Branch("PL11_tdif",&pl11.t_dif,"PL11_tdif/D");
-  tree->Branch("PL3_mtdif",&pl3.mt_dif,"PL3_mtdif/D");
-  tree->Branch("PL5_mtdif",&pl5.mt_dif,"PL5_mtdif/D");
-  tree->Branch("PL7_mtdif",&pl7.mt_dif,"PL7_mtdif/D");
-  tree->Branch("PL11_mtdif",&pl11.mt_dif,"PL11_mtdif/D");
-  tree->Branch("PL11B_mtdif",&pl11b.mt_dif,"PL11B_mtdif/D");
-  
-  tree->Branch("PL3_qdif",&pl3.qdif,"PL3_qdif/D");
-  tree->Branch("PL5_qdif",&pl5.qdif,"PL5_qdif/D");
-  tree->Branch("PL7_qdif",&pl7.qdif,"PL7_qdif/D");
-  tree->Branch("PL11_qdif",&pl11.qdif,"PL11_qdif/D");
-  tree->Branch("PL11B_qdif",&pl11b.qdif,"PL11B_qdif/D");
-  
-  tree->Branch("PL3_qtot",&pl3.qtot,"PL3_qtot/D");
-  tree->Branch("PL5_qtot",&pl5.qtot,"PL5_qtot/D");
-  tree->Branch("PL7_qtot",&pl7.qtot,"PL7_qtot/D");
-  tree->Branch("PL11_qtot",&pl11.qtot,"PL11_qtot/D");
-  tree->Branch("PL11B_qtot",&pl11b.qtot,"PL11B_qtot/D");
-  
-  
+  pl3.set_branches(tree,"PL3");
+  pl5.set_branches(tree,"PL5");
+  pl7.set_branches(tree,"PL7");
+  pl11.set_branches(tree,"PL11");
+  pl11b.set_branches(tree,"PL11B");
   #endif
   
   #ifdef ID_DETAILS

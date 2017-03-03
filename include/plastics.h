@@ -39,6 +39,7 @@ class Plastics{
     void set_qdc_data(int* p){qdata = p;}
     void set_tdc_data(int* p){tdata = p;}
     void set_mtdc_data(int* left, int* right, int *nleft, int *nright, int *tref){mt_left = left; mt_right=right;mt_left_nhit=nleft;mt_right_nhit=nright;mt_time_ref=tref;}
+    void set_branches(TTree *tree, const char* name, int v=0);
 };
 
 Plastics::Plastics(FP i, rawdata &raw):index(i){
@@ -210,5 +211,18 @@ double tof(Plastics &start, Plastics &stop, Timing_t mode){
     return tof + offset;
 }
 
+void Plastics::set_branches(TTree *tree, const char* name, int val){
+    tree->Branch(Form("%s_t",name),&t,Form("%s_t/D",name));
+    tree->Branch(Form("%s_mt",name),&mt,Form("%s_mt/D",name));
+    tree->Branch(Form("%s_tdif",name),&t_dif,Form("%s_tdif/D",name));
+    tree->Branch(Form("%s_mtdif",name),&mt_dif,Form("%s_mtdif/D",name));
+    tree->Branch(Form("%s_qdif",name),&qdif,Form("%s_qdif/D",name));
+    //tree->Branch(Form("%s_qtot",name),&qtot,Form("%s_qtot/D",name));
+    
+    tree->Branch(Form("%s_x_tdif",name),&x_tdif,Form("%s_x_tdif/D",name));
+    tree->Branch(Form("%s_x_mtdif",name),&x_mtdif,Form("%s_x_mtdif/D",name));
+    tree->Branch(Form("%s_x_q",name),&xq,Form("%s_x_q/D",name));
+    
+}
 
 #endif
