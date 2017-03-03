@@ -12,9 +12,9 @@ double mass_unit = 931.49432; // MeV/c^2
 //                                           F3           F5            F7             F9          F11
 double TOFDistance[12]={-31.633,-20.841,-8.8,0.0,11.792,23.283,34.775,46.567,57.867,70.409,81.809,94.35};  
 double distance_PL3_focus = -205.0; // distance nominal focus to plastic F3
-double distance_PL5_focus = 400.0; // distance nominal focus to plastic F5
-double distance_PL7_focus = 300.0; // distance nominal focus to plastic F7
-double distance_PL11_focus = -432.0; // distance nominal focus to plastic F11
+double distance_PL5_focus = -170.0; // distance nominal focus to plastic F5
+double distance_PL7_focus = 305.0; // distance nominal focus to plastic F7
+double distance_PL11_focus = -432; // distance nominal focus to plastic F11
 double distance_F11target_focus = 630.0; // distance nominal focus to F11 target 
 
 //===== PID ===================================
@@ -37,20 +37,20 @@ double default_focal_position[12]={
   -999.0,-999.0,-999.0, 0.0, -999.0, -999.0,-999.0,  0.0, -999.0, -999.0, -999.0,  0.0};
 
 
-double PLQch2mm0[12]={0.,0.,0.,0.,0.,-30.581,    0.,0.,0.,0.,0.,0.};
-double PLQch2mm1[12]={0.,0.,0.,0.,0.,76.221,    0.,0.,0.,0.,0.,0.};
-double PLQch2mm2[12]={0.,0.,0.,0.,0.,10.012, 0.,0.,0.,0.,0.,0.};
-double PLQch2mm3[12]={0.,0.,0.,0.,0.,38.286,0.,0.,0.,0.,0.,0.};
+double PLQch2mm0[12]={24.43,0.,0.,3.113,0.,-31.94,0.,1.553,0.,0.,0.,17.66};
+double PLQch2mm1[12]={0.,   0.,0.,30.69,1.,75.51, 1.,78.8 ,1.,1.,1.,61.45};
+double PLQch2mm2[12]={0.,   0.,0.,0.,   0.,-0.1, 0.,0.,0.,0.,0.,0.};
+double PLQch2mm3[12]={96.32,0.,0.,0.,   0.,45.62,   0.,0.,0.,0.,0.,0.};
 
 double PL_t_mm[12][2] = {  // time to mm std TDC
   {-999,0}, //F11 plastics PMT 3,4
   {0,0},  
   {0,0},  
-  {47.9,-18.0},  // F3plastics
+  {40.9,-15.39},  // F3plastics
   {0,0}, 
-  {-77.4,-27.09}, //F5 plastics
+  {-91.07,-32.69}, //F5 plastics
   {0,0},
-  {-46.34,-35.36}, //F7 plastics
+  {-42.11,-27.76}, //F7 plastics
   {0,0},
   {0,0},
   {0,0},
@@ -58,18 +58,18 @@ double PL_t_mm[12][2] = {  // time to mm std TDC
 };
 
 double PL_mt_mm[12][2] = { //time to mm V1290
-  {5.11,-22.22}, //F11 plastics PMT 3,4
+  {24.93,-27.84}, //F11 plastics PMT 3,4
   {0,0},  
   {0,0},  
-  {-999,0},  // F3plastics
+  {22.12,-11.39},  // F3plastics
   {0,0}, 
-  {-999,0}, //F5 plastics
+  {34.13,-26.93}, //F5 plastics
   {0,0},
-  {-999,0}, //F7 plastics
+  {79.66,-31.05}, //F7 plastics
   {0,0},
   {0,0},
   {0,0},
-  {-41.4176,-37.94} //F11 plastics PMT 1,2
+  {-27.65,-42.89} //F11 plastics PMT 1,2
 };
 
 // MUSIC normalisation
@@ -497,8 +497,9 @@ double Mat79[6][6] = {
 };
 
 double Mat911[6][6] = {
-  0.492516E+00,  0.940953E-01,    0.,             0.,            0.,   12.220,
- -0.24,          1.24,            0.,             0.,            0.,  -0.592115E+00,
+  //0.492516E+00,  0.940953E-01,    0.,             0.,            0.,   12.220,
+  0.492516E+00,  -0.2130,           0.,             0.,            0.,   12.220,
+ -0.24,          1.27,            0.,             0.,            0.,  -0.592115E+00,
   0.,            0.,              0.525997E+00,  -0.179933E-01,  0.,   0.,
   0.,            0.,              0.521447E-01,   0.188332E+01,  0.,   0.,
   0.0,           0.0,             0.,             0.,            1.,      0.0,
