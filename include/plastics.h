@@ -7,6 +7,7 @@
 class Plastics{
     public:
     double qdif=999;
+    double qtot=0;
     double xq=999;
     double x_tdif;
     double x_mtdif;
@@ -104,6 +105,7 @@ Plastics::Plastics(FP i, rawdata &raw):index(i){
 
 void Plastics::clear(){
     qdif = -999;
+    qtot = 0.0;
     xq = -200;
     x_tdif = -200;
     x_mtdif = -200;
@@ -122,7 +124,8 @@ void Plastics::calculate(){
     
     // X position from QDC 
     if(qdata!=nullptr && qdata[0]>qth && qdata[1]>qth){ //check if both QDC are valid
-        qdif=  double(qdata[0]-qdata[1])/double(qdata[0]+qdata[1]);
+	qtot = double(qdata[0]+qdata[1]);
+        qdif=  double(qdata[0]-qdata[1])/qtot;
 	xq = PLQch2mm0[index]+PLQch2mm1[index]*(qdif)
 	    +PLQch2mm2[index]*(qdif*qdif)
 	    +PLQch2mm3[index]*(qdif*qdif*qdif);

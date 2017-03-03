@@ -65,10 +65,24 @@ struct caldata{
     Double_t F5PLQ_X;
     Double_t F7PLQ_X;
     Double_t F11PLQ_X;
+    Double_t F11BPLQ_X;
     Double_t F11longPLQ_X;
     
     Double_t F11_reftime;
     
+    ////////////////////
+    Double_t X3;
+    Double_t A3;
+    
+    Double_t X5;
+    Double_t A5;
+    
+    Double_t X7;
+    Double_t A7;
+    
+    Double_t X11;
+    Double_t A11;
+    //////////////////////////
     //F3-F5
     Double_t AoQ35;
     Double_t Delta35;
@@ -182,9 +196,19 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("F5PLQ_X",&F5PLQ_X,"F5PLQ_X/D");
     tree->Branch("F7PLQ_X",&F7PLQ_X,"F7PLQ_X/D");
     tree->Branch("F11PLQ_X",&F11PLQ_X,"F11PLQ_X/D");
+    tree->Branch("F11BPLQ_X",&F11BPLQ_X,"F11BPLQ_X/D");
     tree->Branch("F11longPLQ_X",&F11longPLQ_X,"F11longPLQ_X/D");
     
     tree->Branch("F11_reftime",&F11_reftime,"F11_reftime/D");
+
+    tree->Branch("X3",&X3,"X3/D");
+    tree->Branch("A3",&A3,"A3/D");
+    tree->Branch("X5",&X5,"X5/D");
+    tree->Branch("A5",&A5,"A5/D");
+    tree->Branch("X7",&X7,"X7/D");
+    tree->Branch("A7",&A7,"A7/D");
+    tree->Branch("X11",&X11,"X11/D");
+    tree->Branch("A11",&A11,"A11/D");
 
     tree->Branch("AoQ35",&AoQ35,"AoQ35/D");
     tree->Branch("Delta35",&Delta35,"Delta35/D");
@@ -284,6 +308,7 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("F5PLQ_X",&F5PLQ_X);
     tree->SetBranchAddress("F7PLQ_X",&F7PLQ_X);
     tree->SetBranchAddress("F11PLQ_X",&F11PLQ_X);
+    tree->SetBranchAddress("F11BPLQ_X",&F11BPLQ_X);
     tree->SetBranchAddress("F11longPLQ_X",&F11longPLQ_X);
 
     tree->SetBranchAddress("AoQ35",&AoQ35);
@@ -301,6 +326,15 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("Beta711",&Beta711);
     tree->SetBranchAddress("Beta711m",&Beta711m);
     tree->SetBranchAddress("Brho711",&Brho711);
+
+    tree->SetBranchAddress("X3",&X3);
+    tree->SetBranchAddress("A3",&A3);
+    tree->SetBranchAddress("X5",&X5);
+    tree->SetBranchAddress("A5",&A5);
+    tree->SetBranchAddress("X7",&X7);
+    tree->SetBranchAddress("A7",&A7);
+    tree->SetBranchAddress("X11",&X11);
+    tree->SetBranchAddress("A11",&A11);
 
     tree->SetBranchAddress("Z3",&Z3);
     tree->SetBranchAddress("Z5",&Z5);
