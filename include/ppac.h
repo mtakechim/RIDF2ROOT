@@ -13,7 +13,6 @@ class PPAC{
     int *t;
     int *aq;
     int *at;
-    int overflow=600;
     
     bool bx[4];
     bool by[4];
@@ -59,14 +58,11 @@ void PPAC::clear(){
 
 void PPAC::calculate(){
     clear();
-    int overflowcheck=0;
     for(int j=0;j<4;j++)
     for(int i=0;i<4;i++){
-	tcal[j][i]=parameters::ch2ns_PPAC[index][j][i]*t[(j*4)+i];
-	if(tcal[j][i]>overflow){overflowcheck=1;}
+        tcal[j][i]=parameters::ch2ns_PPAC[index][j][i]*t[(j*4)+i];
     }
     
-    if(overflowcheck)return;
     
     bool bx[4],by[4];
     for(int i=0;i<4;i++){ //loop over positions
@@ -93,9 +89,9 @@ void PPAC::calculate(){
     } //end of i loop i<4 
     
     if(bx[0] || bx[1])
-        x1 = bx[0]*posx[0] + bx[1]*posx[1]/(bx[0]+bx[1]);
+        x1 = (bx[0]*posx[0] + bx[1]*posx[1])/(bx[0]+bx[1]);
     if(bx[2] || bx[3])
-        x2 = bx[2]*posx[2] + bx[3]*posx[3]/(bx[2]+bx[3]);
+        x2 = (bx[2]*posx[2] + bx[3]*posx[3])/(bx[2]+bx[3]);
     
     double sum_x=0,sum_z=0, sum_zz=0, sum_xz=0;
     int nx=0;
