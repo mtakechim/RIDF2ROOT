@@ -224,12 +224,6 @@ int main(int argc, char* argv[]){
   tree->Branch("AoQ37b",&id_37b.aoq,"AoQ37b/D");
   
   
-  tree->Branch("Brho79",&id_79.brho,"Brho79/D");
-  tree->Branch("Brho911",&id_911.brho,"Brho911/D");
-  
-  tree->Branch("AoQ79",&id_79.aoq,"AoQ79/D");
-  tree->Branch("AoQ911",&id_911.aoq,"AoQ911/D");
-  
   tree->Branch("Beta79",&id_79.beta,"Beta79/D");
   tree->Branch("Beta911",&id_911.beta,"Beta911/D");
   
@@ -251,9 +245,6 @@ int main(int argc, char* argv[]){
   
   Track ppac_f11tx;
   Track ppac_f11ty;
-  tree->Branch("PPAC_F11tx",&ppac_f11tx.val,"PPAC_F11tx/D");
-  tree->Branch("PPAC_F11ty",&ppac_f11ty.val,"PPAC_F11ty/D");
-  
   #endif
   
 
@@ -343,10 +334,15 @@ int main(int argc, char* argv[]){
     ppac_pl11x(ppac11.x,ppac11.a,parameters::distance_PL11_focus);
     #endif
     ppac_f11tx(ppac11.x,ppac11.a,parameters::distance_F11target_focus);
-    ppac_f11ty(ppac11.y,ppac11.b,parameters::distance_F11target_focus);
+    ppac_f11ty(music1.meanpos,music1.a,parameters::distance_F11target_MUSIC1);
+    
+    cal.F11TX = ppac_f11tx.val;
+    cal.F11TY = ppac_f11ty.val;
     
     cal.MUSIC1_pos = music1.meanpos;
+    cal.MUSIC1_a = music1.a;
     cal.MUSIC2_pos = music2.meanpos;
+    cal.MUSIC2_a = music2.a;
     
     cal.TOF35 = tof(pl3,pl5,LE);
     cal.TOF57 = tof(pl5,pl7,LE);
@@ -400,6 +396,10 @@ int main(int argc, char* argv[]){
     cal.Beta711 = average(id_79.beta,id_911.beta,0.3,1);
     //cal.AoQ711 = average(id_79.aoq,id_911.aoq,1.5,3);
     cal.AoQ711 = id_911.aoq+0.02;
+    cal.Brho79 = id_79.brho;
+    cal.Brho911 = id_911.brho;
+    cal.AoQ911 = id_911.aoq+0.02;
+    cal.AoQ79 = id_79.aoq;
     
     id_711.calculate();
     cal.Beta711 = id_711.beta;
@@ -407,6 +407,7 @@ int main(int argc, char* argv[]){
     cal.AoQ711 = id_711.aoq;
     cal.Delta711 = id_711.delta;
     cal.Brho711 = id_711.brho;
+    cal.Gamma711 = id_711.gamma;
     
     
     cal.F3ICGas = raw.IC_GasRaw[3];

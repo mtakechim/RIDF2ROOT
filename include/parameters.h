@@ -15,7 +15,8 @@ double distance_PL3_focus = -205.0; // distance nominal focus to plastic F3
 double distance_PL5_focus = -170.0; // distance nominal focus to plastic F5
 double distance_PL7_focus = 305.0; // distance nominal focus to plastic F7
 double distance_PL11_focus = -432; // distance nominal focus to plastic F11
-double distance_F11target_focus = 630.0; // distance nominal focus to F11 target 
+double distance_F11target_focus = 340.0; // distance nominal focus to F11 target 
+double distance_F11target_MUSIC1 = 390.0;
 
 //===== PID ===================================
 //===== Z ====
@@ -31,7 +32,7 @@ double Z_de[5][2]={
 // the distance of the focus position from the ideal focus point along the z-axis at each Fpl.
 double Zoffset[12]={ 
 //                 F5     F7        F9        F11
-  0.,0.,0.,50.,0.,-60.,0.,0.0,0.0,  0.0,0.0,320.0,
+  0.,0.,0.,50.,0.,-60.,0.,0.0,0.0,  100.0,0.0,320.0,
 };
 double default_focal_position[12]={
  //                     F3            F5              F7                           F11
@@ -529,9 +530,8 @@ double Mat79[6][6] = {
 };
 
 double Mat911[6][6] = {
-  //0.492516E+00,  0.940953E-01,    0.,             0.,            0.,   12.220,
-  0.492516E+00,  -0.2130,           0.,             0.,            0.,   12.220,
- -0.24,          1.27,            0.,             0.,            0.,  -0.592115E+00,
+  0.492516E+00,  -0.02130,           0.,             0.,            0.,   12.220,
+ -0.24,          2.39,            0.,             0.,            0.,  -0.592115E+00,
   0.,            0.,              0.525997E+00,  -0.179933E-01,  0.,   0.,
   0.,            0.,              0.521447E-01,   0.188332E+01,  0.,   0.,
   0.0,           0.0,             0.,             0.,            1.,      0.0,
