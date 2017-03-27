@@ -30,6 +30,10 @@ struct caldata{
     
     Double_t MUSIC1_pos;
     Double_t MUSIC2_pos;
+    
+    Double_t MUSIC1_a;
+    Double_t MUSIC2_a;
+    
     //PPACs
     Double_t F3X;
     Double_t F5X;
@@ -82,6 +86,10 @@ struct caldata{
     
     Double_t X11;
     Double_t A11;
+    
+    Double_t F11TX;
+    Double_t F11TY;
+    
     //////////////////////////
     //F3-F5
     Double_t AoQ35;
@@ -97,14 +105,20 @@ struct caldata{
     
     //F7-F9
     Double_t Delta79;
+    Double_t Brho79;
+    Double_t AoQ79;
+    
     //F9-F11
     Double_t Delta911;
+    Double_t Brho911;
+    Double_t AoQ911;
     
     //F7-F11
     Double_t AoQ711;
     Double_t Delta711;
     Double_t Beta711;
     Double_t Beta711m;
+    Double_t Gamma711;
     Double_t Brho711;
     
     //F3-F7
@@ -117,6 +131,8 @@ struct caldata{
     Double_t Z7;
     Double_t Z11;
     Double_t Z11at;
+    
+    Double_t Dipole[9];
     
         
     void clear_variables();
@@ -164,6 +180,8 @@ void caldata::set_branches(TTree *tree){
     
     tree->Branch("MUSIC1_pos",&MUSIC1_pos,"MUSIC1_pos/D");
     tree->Branch("MUSIC2_pos",&MUSIC2_pos,"MUSIC2_pos/D");
+    tree->Branch("MUSIC1_a",&MUSIC1_a,"MUSIC1_a/D");
+    tree->Branch("MUSIC2_a",&MUSIC2_a,"MUSIC2_a/D");
     
     tree->Branch("F3ICMean",&F3ICMean,"F3ICMean/D");
     tree->Branch("F5ICMean",&F5ICMean,"F5ICMean/D");    
@@ -209,6 +227,9 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("A7",&A7,"A7/D");
     tree->Branch("X11",&X11,"X11/D");
     tree->Branch("A11",&A11,"A11/D");
+    
+    tree->Branch("F11TX",&F11TX,"F11TX/D");
+    tree->Branch("F11TY",&F11TY,"F11TY/D");
 
     tree->Branch("AoQ35",&AoQ35,"AoQ35/D");
     tree->Branch("Delta35",&Delta35,"Delta35/D");
@@ -224,12 +245,18 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("Beta37",&Beta37,"Beta37/D");
     
     tree->Branch("Delta79",&Delta79,"Delta79/D");
+    tree->Branch("AoQ79",&AoQ79,"AoQ79/D");
     tree->Branch("Delta911",&Delta911,"Delta911/D");
+    
+    tree->Branch("Brho79",&Brho79,"Brho79/D");
+    tree->Branch("Brho911",&Brho911,"Brho911/D");
+    tree->Branch("AoQ911",&AoQ911,"AoQ911/D");
     
     tree->Branch("AoQ711",&AoQ711,"AoQ711/D");
     tree->Branch("Delta711",&Delta711,"Delta711/D");
     tree->Branch("Beta711",&Beta711,"Beta711/D");
     tree->Branch("Beta711m",&Beta711m,"Beta711m/D");
+    tree->Branch("Gamma711",&Gamma711,"Gamma711/D");
     tree->Branch("Brho711",&Brho711,"Brho711/D");
 
     tree->Branch("Z3",&Z3,"Z3/D");
@@ -237,6 +264,8 @@ void caldata::set_branches(TTree *tree){
     tree->Branch("Z7",&Z7,"Z7/D");
     tree->Branch("Z11",&Z11,"Z11/D");
     tree->Branch("Z11at",&Z11at,"Z11at/D");
+    
+    //tree->Branch("Dipole",Dipole,"Dipole[9]/D");
 }
 
 void caldata::set_branch_addresses(TTree *tree){
@@ -286,7 +315,9 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("MUSIC2GMean",&MUSIC2GMean);
     
     tree->SetBranchAddress("MUSIC1_pos",&MUSIC1_pos);
+    tree->SetBranchAddress("MUSIC1_a",&MUSIC1_a);
     tree->SetBranchAddress("MUSIC2_pos",&MUSIC2_pos);
+    tree->SetBranchAddress("MUSIC2_a",&MUSIC2_a);
     
     tree->SetBranchAddress("F3ICde",&F3ICde);
     tree->SetBranchAddress("F5ICde",&F5ICde);    
@@ -326,6 +357,12 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("Beta711",&Beta711);
     tree->SetBranchAddress("Beta711m",&Beta711m);
     tree->SetBranchAddress("Brho711",&Brho711);
+    tree->SetBranchAddress("Gamma711",&Gamma711);
+    
+    tree->SetBranchAddress("Brho79",&Brho79);
+    tree->SetBranchAddress("Brho911",&Brho911);
+    tree->SetBranchAddress("AoQ79",&AoQ79);
+    tree->SetBranchAddress("AoQ911",&AoQ911);
 
     tree->SetBranchAddress("X3",&X3);
     tree->SetBranchAddress("A3",&A3);
@@ -335,12 +372,17 @@ void caldata::set_branch_addresses(TTree *tree){
     tree->SetBranchAddress("A7",&A7);
     tree->SetBranchAddress("X11",&X11);
     tree->SetBranchAddress("A11",&A11);
+    
+    tree->SetBranchAddress("F11TX",&F11TX);
+    tree->SetBranchAddress("F11TY",&F11TY);
 
     tree->SetBranchAddress("Z3",&Z3);
     tree->SetBranchAddress("Z5",&Z5);
     tree->SetBranchAddress("Z7",&Z7);
     tree->SetBranchAddress("Z11",&Z11);
     tree->SetBranchAddress("Z11at",&Z11at);
+    
+    tree->SetBranchAddress("Dipole",Dipole);
 }
  
 #endif

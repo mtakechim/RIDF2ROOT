@@ -14,6 +14,7 @@ class IC{
     int tfired = 0;
     double *pos;
     double meanpos;
+    double a;
     
     void calculate();
     void clear();
@@ -60,6 +61,7 @@ void IC::clear(){
     
     tfired = 0;
     meanpos = -999.9;
+    a = -999.9;
     for(int i = 0;i<nanodes;i++){
         pos[i]=-999.9;
     }
@@ -80,6 +82,7 @@ void IC::calculate(){
 	}
     
     double t;
+    double sum_y=0,sum_z=0, sum_zz=0, sum_yz=0;
     if(time != nullptr && reftime!=nullptr){
         meanpos = 0;
         for(int i=0;i<nanodes;i++){
@@ -89,6 +92,10 @@ void IC::calculate(){
                 //std::cout<<t<<" "<<*reftime<<"\n";
                 if(t>tmin && t<tmax){
                     pos[i]=f*t + off;
+                    sum_z += i*50;
+                    sum_zz += i*50*i*50;
+                    sum_y += pos[i];
+                    sum_yz += pos[i]*i*50;
                     meanpos +=pos[i];
                     tfired++;
                 }
@@ -97,6 +104,8 @@ void IC::calculate(){
         
         if(tfired>1){
             meanpos = meanpos/tfired;
+            a = (sum_z*sum_y-(tfired*sum_yz))/(sum_z*sum_z-(tfired*sum_zz));
+            a*= 1000.0; // to mrad
         }
         else{
             meanpos = -999.0;
